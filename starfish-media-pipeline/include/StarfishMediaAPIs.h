@@ -31,7 +31,8 @@ public:
 #endif
 
 private:
-    char padding[0xb8];
+    // Must include big enough storage size. On some system it has 300 bytes, 4KB here should be fairly enough
+    char padding[4096];
 };
 
 enum PF_EVENT_T
