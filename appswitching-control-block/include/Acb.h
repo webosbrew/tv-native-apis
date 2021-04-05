@@ -43,7 +43,7 @@ namespace ACB
 
     enum StateSinkType : long
     {
-        AUTO_ = 0,
+        SINK_AUTO = 0,
         MAIN = 1,
         SUB = 2,
     };
@@ -83,7 +83,7 @@ public:
     void setVsmInfo(long sinkType, long dassAction, long sinkPurpose);
     void startMute(bool audio, bool video, long *taskId = nullptr);
     void stopMute(bool audio, bool video, long *taskId = nullptr);
-    void setSinkType(long sinkType);
+    bool setSinkType(long sinkType);
     void finalize();
 
 private:
