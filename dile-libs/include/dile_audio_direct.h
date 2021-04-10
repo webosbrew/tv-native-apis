@@ -23,6 +23,35 @@ enum DILE_AUDIO_DIRECT_SAMPFREQ_T
 };
 typedef enum DILE_AUDIO_DIRECT_SAMPFREQ_T DILE_AUDIO_DIRECT_SAMPFREQ_T;
 
+static DILE_AUDIO_DIRECT_SAMPFREQ_T DILE_AUDIO_DIRECT_SAMPFREQ_OF(int hertz)
+{
+    switch (hertz)
+    {
+    case 4000:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_4KHZ;
+    case 8000:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_8KHZ;
+    case 11025:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_11KHZ;
+    case 12000:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_12KHZ;
+    case 16000:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_16KHZ;
+    case 22050:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_22KHZ;
+    case 24000:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_24KHZ;
+    case 32000:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_32KHZ;
+    case 44100:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_44KHZ;
+    case 48000:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_48KHZ;
+    default:
+        return DILE_AUDIO_DIRECT_SAMPFREQ_NONE;
+    }
+}
+
 int DILE_AUDIO_DIRECT_Open(unsigned int ch, unsigned int audioIndex);
 int DILE_AUDIO_DIRECT_Start(unsigned int ch, DILE_AUDIO_DIRECT_SRCTYPE_T srcType, DILE_AUDIO_DIRECT_SAMPFREQ_T sampFreq, unsigned int numberofChannel, unsigned int bitPerSample);
 int DILE_AUDIO_DIRECT_GetBufferInfo(unsigned int ch, unsigned int *param_2, void *param_3);
