@@ -1,22 +1,12 @@
+#pragma once
 #include <stddef.h>
 
-enum NDL_DIRECTAUDIO_CH_
+enum NDL_DIRECTMEDIA_APP_STATE_
 {
-    NDL_DIRECTAUDIO_CH_MAIN = 0,
-    NDL_DIRECTAUDIO_CH_SUB = 1
+    NDL_DIRECTMEDIA_APP_STATE_FOREGROUND,
+    NDL_DIRECTMEDIA_APP_STATE_BACKGROUND,
 };
-typedef enum NDL_DIRECTAUDIO_CH_ NDL_DIRECTAUDIO_CH_T;
-
-enum NDL_DIRECTAUDIO_SRC_TYPE_
-{
-    /** PCM Mix Channel */
-    NDL_DIRECTAUDIO_SRC_TYPE_PCM = 1,
-    NDL_DIRECTAUDIO_SRC_TYPE_AC3 = 2,
-    /** AAC. audio/mpeg,mpegversion=4,stream-format=adts */
-    NDL_DIRECTAUDIO_SRC_TYPE_AAC = 3,
-    NDL_DIRECTAUDIO_SRC_TYPE_WTF = 4
-};
-typedef enum NDL_DIRECTAUDIO_SRC_TYPE_ NDL_DIRECTAUDIO_SRC_TYPE_T;
+typedef enum NDL_DIRECTMEDIA_APP_STATE_ NDL_DIRECTMEDIA_APP_STATE_T;
 
 enum NDL_DIRECTAUDIO_SAMPLING_FREQ_
 {
@@ -63,35 +53,13 @@ static NDL_DIRECTAUDIO_SAMPLING_FREQ_T NDL_DIRECTAUDIO_SAMPLING_FREQ_OF(int hert
     }
 }
 
-enum NDL_DIRECTMEDIA_APP_STATE_
-{
-    NDL_DIRECTMEDIA_APP_STATE_FOREGROUND,
-    NDL_DIRECTMEDIA_APP_STATE_BACKGROUND,
-};
-typedef enum NDL_DIRECTMEDIA_APP_STATE_ NDL_DIRECTMEDIA_APP_STATE_T;
-
 typedef void (*NDLInitCallback)(char *type);
 
-typedef struct
-{
-    unsigned int numChannel;
-    unsigned int bitPerSample;
-    /**
-     * @brief Nodelay setting - On(1)/Off(0)
-     */
-    unsigned int nodelay;
-    unsigned int upperThreshold;
-    unsigned int lowerThreshold;
-    NDL_DIRECTAUDIO_CH_T channel;
-    NDL_DIRECTAUDIO_SRC_TYPE_T srcType;
-    NDL_DIRECTAUDIO_SAMPLING_FREQ_T samplingFreq;
-} NDL_DIRECTAUDIO_DATA_INFO;
-
-typedef struct
-{
-    int width;
-    int height;
-} NDL_DIRECTVIDEO_DATA_INFO;
+#if NDL_WEBOS5
+#include "_NDL_directmedia_webos5.h"
+#else
+#include "_NDL_directmedia_webos4.h"
+#endif
 
 /**
  * I guess that's initializing NDL?
@@ -103,41 +71,4 @@ char *NDL_DirectMediaGetError();
 int NDL_DirectMediaSetAppState(NDL_DIRECTMEDIA_APP_STATE_T state);
 void NDL_DirectMediaQuit();
 
-int NDL_DirectAudioOpen(NDL_DIRECTAUDIO_DATA_INFO *info);
-/**
- * @return 0 if succeeded, -1 otherwise.
- */
-int NDL_DirectAudioClose();
-/**
- * @return 0 if succeeded, -1 otherwise.
- */
-int NDL_DirectAudioPause();
-/**
- * @return maybe -1 is failed?
- */
-int NDL_DirectAudioPlay(void *data, size_t size);
-/**
- * @return 0 if succeeded, -1 otherwise.
- */
-int NDL_DirectAudioResume();
-/**
- * @return maybe -1 is failed?
- */
-int NDL_DirectAudioCheckBufferSize(unsigned int *size);
-
-int NDL_DirectVideoOpen(NDL_DIRECTVIDEO_DATA_INFO *info);
-/**
- * @return maybe -1 is failed?
- */
-int NDL_DirectVideoClose();
-/**
- * @return maybe -1 is failed?
- */
-int NDL_DirectVideoPlay(void *data, size_t size);
-/**
- * @return maybe -1 is failed?
- */
-int NDL_DirectVideoPlayWithCallback(void *data, size_t size, void *param_3, void *param_4);
-int NDL_DirectVideoStop();
 int NDL_DirectVideoSetArea(int x, int y, int w, int h);
-int NDL_DirectVideoSetCallback(void (*cb)(void *));
