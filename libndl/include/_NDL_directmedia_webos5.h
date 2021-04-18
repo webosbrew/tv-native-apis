@@ -17,19 +17,39 @@ typedef enum NDL_AUDIO_TYPE
     NDL_AUDIO_TYPE_OPUS = 3,
 } NDL_AUDIO_TYPE;
 
+typedef struct NDL_DIRECTMEDIA_AUDIO_PCM_INFO_T
+{
+    NDL_AUDIO_TYPE audioType;
+    int unknown1;
+    const char *format;
+    const char *layout;
+    const char *channelMode;
+    NDL_DIRECTAUDIO_SAMPLING_FREQ_T sampleRate;
+} NDL_DIRECTMEDIA_AUDIO_PCM_INFO;
+
+typedef struct NDL_DIRECTMEDIA_AUDIO_OPUS_INFO_T
+{
+    NDL_AUDIO_TYPE audioType;
+    int unknown1;
+    int channels;
+    int unknown2;
+    double sampleRate;
+    const char *streamHeader;
+} NDL_DIRECTMEDIA_AUDIO_OPUS_INFO;
+
 typedef struct NDL_DIRECTMEDIA_DATA_INFO_T
 {
     int videoWidth;
     int videoHeight;
     NDL_VIDEO_TYPE videoType;
     int unknown1;
-    NDL_AUDIO_TYPE audioType;
-    int unknown2;
-    char *pcmFormat;
-    char *pcmLayout;
-    char *pcmChannelMode;
-    NDL_DIRECTAUDIO_SAMPLING_FREQ_T sampleRate;
-    char *opusStreamHeader;
+    union
+    {
+        NDL_AUDIO_TYPE type;
+        NDL_DIRECTMEDIA_AUDIO_PCM_INFO pcm;
+        NDL_DIRECTMEDIA_AUDIO_OPUS_INFO opus;
+        char padding[32];
+    } audio;
 } NDL_DIRECTMEDIA_DATA_INFO;
 
 typedef struct NDL_DIRECTVIDEO_HDR_INFO_T
