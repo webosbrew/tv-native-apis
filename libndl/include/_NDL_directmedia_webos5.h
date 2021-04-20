@@ -1,5 +1,7 @@
 #pragma once
 
+#include <_NDL_directmedia_types.h>
+
 typedef void (*NDLMediaLoadCallback)(int, long long, const char *);
 
 typedef enum NDL_VIDEO_TYPE
@@ -19,7 +21,7 @@ typedef enum NDL_AUDIO_TYPE
 
 typedef struct NDL_DIRECTMEDIA_AUDIO_PCM_INFO_T
 {
-    NDL_AUDIO_TYPE audioType;
+    NDL_AUDIO_TYPE type;
     int unknown1;
     const char *format;
     const char *layout;
@@ -29,7 +31,7 @@ typedef struct NDL_DIRECTMEDIA_AUDIO_PCM_INFO_T
 
 typedef struct NDL_DIRECTMEDIA_AUDIO_OPUS_INFO_T
 {
-    NDL_AUDIO_TYPE audioType;
+    NDL_AUDIO_TYPE type;
     int unknown1;
     int channels;
     int unknown2;
@@ -39,10 +41,13 @@ typedef struct NDL_DIRECTMEDIA_AUDIO_OPUS_INFO_T
 
 typedef struct NDL_DIRECTMEDIA_DATA_INFO_T
 {
-    int videoWidth;
-    int videoHeight;
-    NDL_VIDEO_TYPE videoType;
-    int unknown1;
+    struct
+    {
+        int width;
+        int height;
+        NDL_VIDEO_TYPE type;
+        int unknown1;
+    } video;
     union
     {
         NDL_AUDIO_TYPE type;

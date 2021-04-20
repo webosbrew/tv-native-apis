@@ -1,5 +1,7 @@
 #pragma once
 
+#include <_NDL_directmedia_types.h>
+
 enum NDL_DIRECTAUDIO_CH_
 {
     NDL_DIRECTAUDIO_CH_MAIN = 0,
