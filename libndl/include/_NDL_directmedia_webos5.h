@@ -41,7 +41,7 @@ typedef struct NDL_DIRECTMEDIA_AUDIO_OPUS_INFO_T
 
 typedef struct NDL_DIRECTMEDIA_DATA_INFO_T
 {
-    struct
+    struct NDL_DIRECTMEDIA_VIDEO_INFO_T
     {
         int width;
         int height;
