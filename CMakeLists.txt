@@ -7,3 +7,7 @@ add_subdirectory(lgncapi)
 add_subdirectory(libndl)
 add_subdirectory(starfish-media-pipeline)
 add_subdirectory(webos-helpers)
+
+if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    add_subdirectory(samples)
+endif()
