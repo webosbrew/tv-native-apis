@@ -1,0 +1,1 @@
+project(samples LANGUAGES C)
