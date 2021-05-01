@@ -32,5 +32,5 @@ struct LGNC_VDEC_DATA_INFO
 typedef struct LGNC_VDEC_DATA_INFO LGNC_VDEC_DATA_INFO_T;
 
 int LGNC_DIRECTVIDEO_Close();
-int LGNC_DIRECTVIDEO_Open(LGNC_VDEC_DATA_INFO_T *info);
-int LGNC_DIRECTVIDEO_Play(void *data, unsigned int size);
+int LGNC_DIRECTVIDEO_Open(const LGNC_VDEC_DATA_INFO_T *info);
+int LGNC_DIRECTVIDEO_Play(const void *data, unsigned int size);
