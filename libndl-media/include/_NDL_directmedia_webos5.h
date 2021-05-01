@@ -4,8 +4,8 @@
 
 typedef void (*NDLMediaLoadCallback)(int, long long, const char *);
 
-#define NDL_DIRECTMEDIA_AUDIO_PCM_FORMAT_S16LE "S16LE";
-#define NDL_DIRECTMEDIA_AUDIO_PCM_MODE_STEREO "stereo";
+#define NDL_DIRECTMEDIA_AUDIO_PCM_FORMAT_S16LE "S16LE"
+#define NDL_DIRECTMEDIA_AUDIO_PCM_MODE_STEREO "stereo"
 
 typedef enum NDL_VIDEO_TYPE
 {
