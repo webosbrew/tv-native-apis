@@ -49,7 +49,7 @@ int NDL_DirectAudioClose();
 /**
  * @return 0 if succeeded
  */
-int NDL_DirectAudioPlay(void *data, size_t size);
+int NDL_DirectAudioPlay(const void *data, size_t size);
 
 /**
  * @return 0 if succeeded
@@ -68,9 +68,9 @@ int NDL_DirectVideoSetCallback(NDLVideoPlayCallback cb);
 /**
  * @return 0 if succeeded
  */
-int NDL_DirectVideoPlay(void *data, size_t size);
+int NDL_DirectVideoPlay(const void *data, size_t size);
 /**
  * @return 0 if succeeded
  */
-int NDL_DirectVideoPlayWithCallback(void *data, size_t size, unsigned long long userdata);
+int NDL_DirectVideoPlayWithCallback(const void *data, size_t size, unsigned long long userdata);
 int NDL_DirectVideoStop();

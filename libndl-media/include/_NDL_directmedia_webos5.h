@@ -84,7 +84,7 @@ int NDL_DirectMediaUnload();
  * @param pts for webOS 5 only
  * @return 0 if succeeded
  */
-int NDL_DirectAudioPlay(void *data, size_t size, unsigned long long pts);
+int NDL_DirectAudioPlay(const void *data, size_t size, unsigned long long pts);
 
 int NDL_DirectAudioGetAvailableBufferSize(int *available);
 
@@ -96,7 +96,7 @@ int NDL_DirectAudioSupportMultiChannel(int *value);
  * @param pts for webOS 5 only
  * @return 0 if succeeded
  */
-int NDL_DirectVideoPlay(void *data, size_t size, unsigned long long pts);
+int NDL_DirectVideoPlay(const void *data, size_t size, unsigned long long pts);
 
 int NDL_DirectVideoGetRenderBufferLength(int *length);
 

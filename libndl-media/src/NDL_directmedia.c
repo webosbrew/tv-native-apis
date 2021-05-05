@@ -11,12 +11,12 @@ int NDL_DirectVideoSetArea(int x, int y, int w, int h) { return -1; }
 int NDL_DirectMediaLoad(NDL_DIRECTMEDIA_DATA_INFO *info, NDLMediaLoadCallback callback) { return -1; }
 int NDL_DirectMediaUnload() { return -1; }
 
-int NDL_DirectAudioPlay(void *data, size_t size, unsigned long long pts) { return -1; }
+int NDL_DirectAudioPlay(const void *data, size_t size, unsigned long long pts) { return -1; }
 int NDL_DirectAudioGetAvailableBufferSize(int *available) { return -1; }
 int NDL_DirectAudioGetTotalBufferSize(int *total) { return -1; }
 int NDL_DirectAudioSupportMultiChannel(int *value) { return -1; }
 
-int NDL_DirectVideoPlay(void *data, size_t size, unsigned long long pts) { return -1; }
+int NDL_DirectVideoPlay(const void *data, size_t size, unsigned long long pts) { return -1; }
 int NDL_DirectVideoGetRenderBufferLength(int *length) { return -1; }
 int NDL_DirectVideoSetHDRInfo(NDL_DIRECTVIDEO_HDR_INFO info) { return -1; }
 int NDL_DirectVideoSetFrameDropThreshold(int threshold) { return -1; }
@@ -24,14 +24,14 @@ int NDL_DirectVideoSetFrameDropThreshold(int threshold) { return -1; }
 int NDL_DirectAudioOpen(NDL_DIRECTAUDIO_DATA_INFO *info) { return -1; }
 int NDL_DirectAudioClose() { return -1; }
 int NDL_DirectAudioCheckBufferSize(unsigned int *size) { return -1; }
-int NDL_DirectAudioPlay(void *data, size_t size) { return -1; }
+int NDL_DirectAudioPlay(const void *data, size_t size) { return -1; }
 int NDL_DirectAudioPause() { return -1; }
 int NDL_DirectAudioResume() { return -1; }
 
 int NDL_DirectVideoOpen(NDL_DIRECTVIDEO_DATA_INFO *info) { return -1; }
 int NDL_DirectVideoClose() { return -1; }
 int NDL_DirectVideoSetCallback(NDLVideoPlayCallback cb) { return -1; }
-int NDL_DirectVideoPlay(void *data, size_t size) { return -1; }
+int NDL_DirectVideoPlay(const void *data, size_t size) { return -1; }
 int NDL_DirectVideoStop() { return -1; }
-int NDL_DirectVideoPlayWithCallback(void *data, size_t size, unsigned long long userdata) { return -1; }
+int NDL_DirectVideoPlayWithCallback(const void *data, size_t size, unsigned long long userdata) { return -1; }
 #endif

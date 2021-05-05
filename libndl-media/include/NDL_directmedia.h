@@ -10,7 +10,7 @@
 
 /**
  * I guess that's initializing NDL?
- * 
+ * @param appId Application ID
  * @return 0 if succeeded, -1 otherwise.
  */
 int NDL_DirectMediaInit(const char *appid, NDLInitCallback cb);

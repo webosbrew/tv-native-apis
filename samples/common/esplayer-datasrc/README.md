@@ -1,0 +1,2 @@
+This component is for fetching `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`,
+parsing and demuxing into H264 & AAC stream for sample apps demonstrating video stream playback feature.

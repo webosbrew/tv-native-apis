@@ -1,0 +1,9 @@
+{
+    "id": "@WEBOS_APPID@",
+    "version": "@PROJECT_VERSION@",
+    "vendor": "webOS Homebrew Project",
+    "type": "native",
+    "main": "@TARGET@",
+    "title": "@WEBOS_APPTITLE@",
+    "icon": "icon.png"
+}
