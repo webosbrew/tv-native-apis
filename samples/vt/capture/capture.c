@@ -30,6 +30,8 @@ int capture_initialize();
 void capture_terminate();
 void capture_onevent(VT_EVENT_TYPE_T type, void *data, void *user_data);
 
+#define CRLF() fwrite("\r\n", 1, 2, stdout)
+
 int main(int argc, char *argv[])
 {
     // Create an SDL Window
@@ -50,12 +52,17 @@ int main(int argc, char *argv[])
     glGenFramebuffers(1, &offscreen_fb);
     SDL_assert(offscreen_fb);
 
-    printf("HTTP/1.1 200 OK\r\n");
-    printf("Content-Type: multipart/x-mixed-replace; boundary=myboundary\r\n");
-    printf("Cache-Control: no-cache\r\n");
-    printf("Connection: close\r\n");
-    printf("Pragma: no-cache\r\n");
-    printf("\r\n");
+    printf("HTTP/1.1 200 OK");
+    CRLF();
+    printf("Content-Type: multipart/x-mixed-replace; boundary=myboundary");
+    CRLF();
+    printf("Cache-Control: no-cache");
+    CRLF();
+    printf("Connection: close");
+    CRLF();
+    printf("Pragma: no-cache");
+    CRLF();
+    CRLF();
 
     int ret;
     if ((ret = capture_initialize()) != 0)
@@ -197,7 +204,7 @@ void capture_acquire()
                 if (pixels)
                 {
                     glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-                    write_JPEG_stdout(95);
+                    write_JPEG_stdout(85);
                 }
 
                 glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -228,7 +235,6 @@ void capture_onevent(VT_EVENT_TYPE_T type, void *data, void *user_data)
     switch (type)
     {
     case VT_AVAILABLE:
-        fprintf(stderr, "VT_AVAILABLE received: data=%p\n", data);
         vt_available = true;
         capture_acquire();
         break;
@@ -342,12 +348,15 @@ void write_JPEG_stdout(int quality)
     jpeg_finish_compress(&cinfo);
     /* After finish_compress, we can close the output file. */
 
-    printf("--myboundary\r\n");
-    printf("Content-Type: image/jpeg\r\n");
-    printf("Content-Length: %d\r\n", jpegSize);
-    printf("\r\n");
+    printf("--myboundary");
+    CRLF();
+    printf("Content-Type: image/jpeg");
+    CRLF();
+    printf("Content-Length: %d", jpegSize);
+    CRLF();
+    CRLF();
     fwrite(jpegBuf, 1, jpegSize, stdout);
-    printf("\r\n");
+    CRLF();
 
     /* Step 7: release JPEG compression object */
 
