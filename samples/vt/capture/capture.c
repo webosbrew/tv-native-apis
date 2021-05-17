@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include <SDL.h>
+#include <SDL_opengles2.h>
 #include <vt/vt_openapi.h>
 
 SDL_Window *sdl_window;
@@ -10,8 +12,12 @@ SDL_GLContext egl;
 VT_VIDEO_WINDOW_ID window_id;
 VT_RESOURCE_ID resource_id;
 VT_CONTEXT_ID context_id;
+GLuint texture_id = 0;
+GLuint offscreen_fb = 0;
 
-int app_quit = 0;
+bool app_quit = false;
+bool capture_initialized = false;
+bool vt_available = false;
 
 int capture_initialize();
 void capture_terminate();
@@ -39,6 +45,8 @@ int main(int argc, char *argv[])
     {
         return ret;
     }
+    glGenFramebuffers(1, &offscreen_fb);
+    SDL_assert(offscreen_fb);
 
     while (!app_quit)
     {
@@ -49,13 +57,13 @@ int main(int argc, char *argv[])
             switch (evt.type)
             {
             case SDL_QUIT:
-                app_quit = 1;
+                app_quit = true;
                 break;
             case SDL_KEYUP:
                 switch (evt.key.keysym.scancode)
                 {
                 case SDL_WEBOS_SCANCODE_BACK:
-                    app_quit = 1;
+                    app_quit = true;
                     break;
                 }
             }
@@ -63,6 +71,8 @@ int main(int argc, char *argv[])
     }
 
     capture_terminate();
+    glDeleteFramebuffers(1, &offscreen_fb);
+
     SDL_GL_DeleteContext(egl);
     SDL_DestroyWindow(sdl_window);
     return 0;
@@ -109,12 +119,19 @@ int capture_initialize()
         VT_ReleaseVideoWindowResource(resource_id);
         return -1;
     }
-
+    capture_initialized = true;
     return 0;
 }
 
 void capture_terminate()
 {
+    capture_initialized = false;
+
+    if (texture_id != 0 && glIsTexture(texture_id))
+    {
+        VT_DeleteTexture(context_id, texture_id);
+    }
+
     if (VT_UnRegisterEventHandler(context_id) != VT_OK)
     {
         fprintf(stderr, "[Capture Sample] VT_UnRegisterEventHandler error!\n");
@@ -123,12 +140,82 @@ void capture_terminate()
     VT_ReleaseVideoWindowResource(resource_id);
 }
 
+void print_bytes(const void *ptr, int size)
+{
+    const unsigned char *p = ptr;
+    int i;
+    for (i = 0; i < size; i++)
+    {
+        printf("%02hhX ", p[i]);
+    }
+    printf("\n");
+}
+
+void capture_acquire()
+{
+    VT_OUTPUT_INFO_T output_info;
+    if (vt_available)
+    {
+        if (capture_initialized)
+        {
+
+            if (texture_id != 0 && glIsTexture(texture_id))
+            {
+                VT_DeleteTexture(context_id, texture_id);
+            }
+
+            VT_STATUS_T vtStatus = VT_GenerateTexture(resource_id, context_id, &texture_id, &output_info);
+            if (vtStatus == VT_OK)
+            {
+                int width = output_info.activeRegion.w, height = output_info.activeRegion.h;
+
+                glBindFramebuffer(GL_FRAMEBUFFER, offscreen_fb);
+
+                glBindTexture(GL_TEXTURE_2D, texture_id);
+
+                //Bind the texture to your FBO
+                glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
+
+                //Test if everything failed
+                GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+                if (status != GL_FRAMEBUFFER_COMPLETE)
+                {
+                    printf("failed to make complete framebuffer object %x", status);
+                }
+
+                glViewport(0, 0, width, height);
+
+                GLubyte *pixels = (GLubyte *)malloc(width * height * sizeof(GLubyte) * 4);
+                glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+                printf("Pixels header: ");
+                print_bytes(&pixels, 20);
+                FILE *f = fopen("/tmp/capture.bin", "wb");
+                fwrite(pixels, width * height * sizeof(GLubyte) * 4, 1, f);
+                fflush(f);
+                fclose(f);
+                free(pixels);
+
+                glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+                app_quit = true;
+            }
+            else
+            {
+                texture_id = 0;
+            }
+        }
+        vt_available = false;
+    }
+}
+
 void capture_onevent(VT_EVENT_TYPE_T type, void *data, void *user_data)
 {
     switch (type)
     {
     case VT_AVAILABLE:
         printf("VT_AVAILABLE received: data=%p\n", data);
+        vt_available = true;
+        capture_acquire();
         break;
     case VT_UNAVAILABLE:
         fprintf(stderr, "VT_UNAVAILABLE received\n");
