@@ -10,3 +10,5 @@ VT_STATUS_T VT_RegisterEventHandler(VT_CONTEXT_ID contextId, VT_EVENT_HANDLER ha
 VT_STATUS_T VT_UnRegisterEventHandler(VT_CONTEXT_ID contextId) { return -1; }
 VT_STATUS_T VT_GenerateTexture(VT_RESOURCE_ID resourceId, VT_CONTEXT_ID contextId, uint32_t *textureId, VT_OUTPUT_INFO_T *outputInfo) { return -1; }
 VT_STATUS_T VT_DeleteTexture(VT_CONTEXT_ID contextId, uint32_t textureId) { return -1; }
+VT_STATUS_T VT_GetTextureResolution(VT_CONTEXT_ID contextId, VT_RESOLUTION_T *resolution) { return -1; }
+VT_STATUS_T VT_SetTextureResolution(VT_CONTEXT_ID contextId, VT_RESOLUTION_T *resolution) { return -1; }
