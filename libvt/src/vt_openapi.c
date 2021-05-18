@@ -3,7 +3,7 @@
 VT_VIDEO_WINDOW_ID VT_CreateVideoWindow(VT_VIDEO_PATH videoPath) { return -1; }
 VT_STATUS_T VT_AcquireVideoWindowResource(VT_VIDEO_WINDOW_ID windowId, VT_RESOURCE_ID *resourceId) { return -1; }
 VT_STATUS_T VT_ReleaseVideoWindowResource(VT_RESOURCE_ID resourceId) { return -1; }
-VT_CONTEXT_ID VT_CreateContext(VT_RESOURCE_ID resourceId, int param2) { return -1; }
+VT_CONTEXT_ID VT_CreateContext(VT_RESOURCE_ID resourceId, int textureBufferSize) { return -1; }
 VT_STATUS_T VT_DeleteContext(VT_CONTEXT_ID contextId) { return -1; }
 VT_STATUS_T VT_SetTextureSourceRegion(VT_CONTEXT_ID contextId, int param2) { return -1; }
 VT_STATUS_T VT_RegisterEventHandler(VT_CONTEXT_ID contextId, VT_EVENT_HANDLER handler, void *user_data) { return -1; }

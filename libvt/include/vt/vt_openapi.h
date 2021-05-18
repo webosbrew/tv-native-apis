@@ -40,7 +40,7 @@ typedef void (*VT_EVENT_HANDLER)(VT_EVENT_TYPE_T type, void *data, void *user_da
 VT_VIDEO_WINDOW_ID VT_CreateVideoWindow(VT_VIDEO_PATH videoPath);
 VT_STATUS_T VT_AcquireVideoWindowResource(VT_VIDEO_WINDOW_ID windowId, VT_RESOURCE_ID *resourceId);
 VT_STATUS_T VT_ReleaseVideoWindowResource(VT_RESOURCE_ID resourceId);
-VT_CONTEXT_ID VT_CreateContext(VT_RESOURCE_ID resourceId, int param2);
+VT_CONTEXT_ID VT_CreateContext(VT_RESOURCE_ID resourceId, int textureBufferSize);
 VT_STATUS_T VT_DeleteContext(VT_CONTEXT_ID contextId);
 VT_STATUS_T VT_SetTextureSourceRegion(VT_CONTEXT_ID contextId, int param2);
 VT_STATUS_T VT_RegisterEventHandler(VT_CONTEXT_ID contextId, VT_EVENT_HANDLER handler, void *user_data);
