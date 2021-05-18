@@ -34,6 +34,10 @@ void capture_onevent(VT_EVENT_TYPE_T type, void *data, void *user_data);
 
 int main(int argc, char *argv[])
 {
+    if (SDL_getenv("XDG_RUNTIME_DIR") == NULL)
+    {
+        SDL_setenv("XDG_RUNTIME_DIR", "/tmp/xdg", 1);
+    }
     // Create an SDL Window
     sdl_window = SDL_CreateWindow("Capture", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920, 1080,
                                   SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);

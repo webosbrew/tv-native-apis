@@ -4,5 +4,8 @@ Usage demonstration for capturing screen content with libvt
 
 Usage:
 ```
-ssh root@tv-ip 'XDG_RUNTIME_DIR=/tmp/xdg bin/capture' | ffplay -f mjpeg -framerate 60 -
+# With root
+ssh root@tv 'bin/capture' | ffplay -f mjpeg -framerate 60 -
+# Without root
+ssh root@tv 'jailer -d -t native_devmode -i com.palmdts.devmode -p /media/developer bin/capture' | ffplay -f mjpeg -framerate 60 -
 ```
