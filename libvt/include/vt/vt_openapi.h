@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 #define VT_OK 0
-#define VT_SOURCE_REGION_MAX 1
 
 typedef int32_t VT_VIDEO_WINDOW_ID;
 typedef int32_t VT_RESOURCE_ID;
@@ -18,6 +17,19 @@ typedef enum VT_EVENT_TYPE_T
     VT_UNAVAILABLE = 1,
     VT_RESOURCE_BUSY = 2,
 } VT_EVENT_TYPE_T;
+
+typedef enum VT_SOURCE_REGION_T
+{
+    VT_SOURCE_REGION_ACTIVE = 0,
+    VT_SOURCE_REGION_MAX = 1,
+} VT_SOURCE_REGION_T;
+
+typedef enum VT_SOURCE_LOCATION_T
+{
+    VT_SOURCE_LOCATION_SOURCE = 0,
+    VT_SOURCE_LOCATION_DISPLAY = 1,
+} VT_SOURCE_LOCATION_T;
+
 typedef struct VT_REGION_T
 {
     uint16_t x, y, w, h;
@@ -42,7 +54,8 @@ VT_STATUS_T VT_AcquireVideoWindowResource(VT_VIDEO_WINDOW_ID windowId, VT_RESOUR
 VT_STATUS_T VT_ReleaseVideoWindowResource(VT_RESOURCE_ID resourceId);
 VT_CONTEXT_ID VT_CreateContext(VT_RESOURCE_ID resourceId, int textureBufferSize);
 VT_STATUS_T VT_DeleteContext(VT_CONTEXT_ID contextId);
-VT_STATUS_T VT_SetTextureSourceRegion(VT_CONTEXT_ID contextId, int param2);
+VT_STATUS_T VT_SetTextureSourceRegion(VT_CONTEXT_ID contextId, VT_SOURCE_REGION_T sourceRegion);
+VT_STATUS_T VT_SetTextureSourceLocation(VT_CONTEXT_ID contextId, VT_SOURCE_LOCATION_T sourceLocation);
 VT_STATUS_T VT_RegisterEventHandler(VT_CONTEXT_ID contextId, VT_EVENT_HANDLER handler, void *user_data);
 VT_STATUS_T VT_UnRegisterEventHandler(VT_CONTEXT_ID contextId);
 VT_STATUS_T VT_GenerateTexture(VT_RESOURCE_ID resourceId, VT_CONTEXT_ID contextId, uint32_t *textureId, VT_OUTPUT_INFO_T *outputInfo);
