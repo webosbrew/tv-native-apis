@@ -1,5 +1,6 @@
 #include "vt/vt_openapi.h"
 
+VT_STATUS_T VT_IsSystemSupported(int32_t *supported) { return -1; }
 VT_VIDEO_WINDOW_ID VT_CreateVideoWindow(VT_VIDEO_PATH videoPath) { return -1; }
 VT_STATUS_T VT_AcquireVideoWindowResource(VT_VIDEO_WINDOW_ID windowId, VT_RESOURCE_ID *resourceId) { return -1; }
 VT_STATUS_T VT_ReleaseVideoWindowResource(VT_RESOURCE_ID resourceId) { return -1; }

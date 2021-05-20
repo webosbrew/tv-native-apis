@@ -49,6 +49,7 @@ typedef struct VT_OUTPUT_INFO_T
 
 typedef void (*VT_EVENT_HANDLER)(VT_EVENT_TYPE_T type, void *data, void *user_data);
 
+VT_STATUS_T VT_IsSystemSupported(int32_t *supported);
 VT_VIDEO_WINDOW_ID VT_CreateVideoWindow(VT_VIDEO_PATH videoPath);
 VT_STATUS_T VT_AcquireVideoWindowResource(VT_VIDEO_WINDOW_ID windowId, VT_RESOURCE_ID *resourceId);
 VT_STATUS_T VT_ReleaseVideoWindowResource(VT_RESOURCE_ID resourceId);
