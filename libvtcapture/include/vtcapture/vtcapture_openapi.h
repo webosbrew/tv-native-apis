@@ -6,6 +6,7 @@
 typedef int32_t VTDRIVER;
 typedef char VT_IDK;
 typedef int32_t VT_CAPTURE_PROPERTIES;
+typedef int32_t VT_STATUS_T;
 
 VT_STATUS_T vtCapture_init(VTDRIVER *this);
 VT_STATUS_T vtCapture_preprocess(VTDRIVER *this, VT_IDK *idk, VT_CAPTURE_PROPERTIES *props);
