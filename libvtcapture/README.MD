@@ -1,1 +1,1 @@
-libvtcapture fake library - like libvt
+# libvtcapture fake library - like libvt
