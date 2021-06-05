@@ -21,10 +21,12 @@ VT_REGION_T region;
 VT_REGION_T activeregion;
 
 _LibVtCaptureBufferInfo buff;
-int addr0, addr1, size0, size1;
+char *addr0, *addr1;
+int size0, size1;
 
 int isrunning = 0;
 
+void NV21_TO_RGB24(unsigned char *yuyv, unsigned char *rgb, int width, int height);
 int stop();
 int finalize();
 
@@ -33,13 +35,13 @@ int main(int argc, char *argv[])
     int done;
     int ex;
     //Capture properties for vtCapture_preprocess - _LibVtCaptureProperties
-    int dumping = 1;
+    int dumping = 2;
     int capturex = 0;
     int capturey = 0;
-    int captureWidth = 1900;
-    int captureHeight = 200;
+    int captureWidth = 1280;
+    int captureHeight = 720;
     int framerate = 30;
-    int buffer_count = 3;
+    int buffer_count = 1;
 
     VT_DUMP_T dump = dumping;
     VT_LOC_T loc = {capturex, capturey};
@@ -107,6 +109,7 @@ int main(int argc, char *argv[])
     }
     fprintf(stderr, "vtCapture_process done!\n");
 
+    sleep(2);
     done = vtCapture_currentCaptureBuffInfo(driver, &buff);
     if (done == 0 ) {
         addr0 = buff.start_addr0;
@@ -119,11 +122,79 @@ int main(int argc, char *argv[])
         return ex;
     }
     fprintf(stderr, "vtCapture_currentCaptureBuffInfo done!\naddr0: %p addr1: %p size0: %d size1: %d\n", addr0, addr1, size0, size1);
-    //ToDo: Image processing
+
+ //   char *rgb1;
+//    char *rgb2;
+
+  //  char *yuyv1 = addr0;
+ //   char *yuyv2 = addr1;
+
+ //   NV21_TO_RGB24(yuyv1, rgb1, w, h);
+ //   NV21_TO_RGB24(yuyv2, rgb2, w, h);
+
+    fprintf(stderr, "addr0: %p buff.addr0: %p sizeaddr0: %d sizebuff.addr0: %d\n", addr0, buff.start_addr0, sizeof(*addr0), sizeof(*buff.start_addr0));
+ //   fprintf(stderr, "rgb1: %p addr0: %p sizergb1: %d sizeaddr0: %d\n", rgb1, addr0, sizeof(*rgb1), sizeof(*addr0));
+    FILE * pFile;
+    pFile = fopen ("/tmp/myfile.bin","wb");
+    if (pFile!=NULL)
+    {
+        fwrite(addr0, size0, sizeof(addr0), pFile);
+        fwrite(addr1, size1, sizeof(addr0), pFile);
+        fclose (pFile);
+    }
 
     done = stop();
     return done;
 }
+
+//Credits: https://www.programmersought.com/article/18954751423/
+void NV21_TO_RGB24(unsigned char *yuyv, unsigned char *rgb, int width, int height)
+{
+        const int nv_start = width * height ;
+        int  index = 0, rgb_index = 0;
+        uint8_t y, u, v;
+        int r, g, b, nv_index = 0,i, j;
+ 
+        for(i = 0; i < height; i++){
+            for(j = 0; j < width; j ++){
+                //nv_index = (rgb_index / 2 - width / 2 * ((i + 1) / 2)) * 2;
+                nv_index = i / 2  * width + j - j % 2;
+ 
+                y = yuyv[rgb_index];
+                u = yuyv[nv_start + nv_index ];
+                v = yuyv[nv_start + nv_index + 1];
+ 
+                r = y + (140 * (v-128))/100;  //r
+                g = y - (34 * (u-128))/100 - (71 * (v-128))/100; //g
+                b = y + (177 * (u-128))/100; //b
+ 
+                if(r > 255)   r = 255;
+                if(g > 255)   g = 255;
+                if(b > 255)   b = 255;
+                if(r < 0)     r = 0;
+                if(g < 0)     g = 0;
+                if(b < 0)     b = 0;
+ 
+                index = rgb_index % width + (height - i - 1) * width;
+                //rgb[index * 3+0] = b;
+                //rgb[index * 3+1] = g;
+                //rgb[index * 3+2] = r;
+ 
+                                 //Invert the image
+                //rgb[height * width * 3 - i * width * 3 - 3 * j - 1] = b;
+                //rgb[height * width * 3 - i * width * 3 - 3 * j - 2] = g;
+                //rgb[height * width * 3 - i * width * 3 - 3 * j - 3] = r;
+ 
+                                 //Front image
+                rgb[i * width * 3 + 3 * j + 0] = b;
+                rgb[i * width * 3 + 3 * j + 1] = g;
+                rgb[i * width * 3 + 3 * j + 2] = r;
+ 
+                rgb_index++;
+            }
+        }
+}
+
 
 int stop()
 {

@@ -66,8 +66,8 @@ typedef struct _LibVtCapturePlaneInfo
 
 typedef struct _LibVtCaptureBufferInfo
 {
-    int32_t start_addr0;
-    int32_t start_addr1;
+    char *start_addr0;
+    char *start_addr1;
     int32_t size0;
     int32_t size1;
 } _LibVtCaptureBufferInfo;
