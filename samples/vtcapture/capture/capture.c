@@ -123,25 +123,37 @@ int main(int argc, char *argv[])
     }
     fprintf(stderr, "vtCapture_currentCaptureBuffInfo done!\naddr0: %p addr1: %p size0: %d size1: %d\n", addr0, addr1, size0, size1);
 
- //   char *rgb1;
-//    char *rgb2;
+    //Combine two Image Buffers to one and convert to RGB24
+    char *first, *secound;
+    first = (char *) malloc(size0*sizeof(char));
+    memcpy(first, addr0, size0);
+    secound = (char *) malloc(size1*sizeof(char));
+    memcpy(secound, addr1, size1);
 
-  //  char *yuyv1 = addr0;
- //   char *yuyv2 = addr1;
+    int comsize;
+    comsize = size0+size1;
+    char *combined;
+    combined = (char *) malloc((comsize)*sizeof(char));
 
- //   NV21_TO_RGB24(yuyv1, rgb1, w, h);
- //   NV21_TO_RGB24(yuyv2, rgb2, w, h);
+    memcpy(combined, first, size0);
+    memcpy(combined+size0, secound, size1);
 
-    fprintf(stderr, "addr0: %p buff.addr0: %p sizeaddr0: %d sizebuff.addr0: %d\n", addr0, buff.start_addr0, sizeof(*addr0), sizeof(*buff.start_addr0));
- //   fprintf(stderr, "rgb1: %p addr0: %p sizergb1: %d sizeaddr0: %d\n", rgb1, addr0, sizeof(*rgb1), sizeof(*addr0));
+    free(first);
+    free(secound);
+
+    int rgbsize = sizeof(combined)*w*h*3;
+    char *rgbout = (char *) malloc(rgbsize);
+    NV21_TO_RGB24(combined, rgbout, w, h);
+
     FILE * pFile;
     pFile = fopen ("/tmp/myfile.bin","wb");
     if (pFile!=NULL)
     {
-        fwrite(addr0, size0, sizeof(addr0), pFile);
-        fwrite(addr1, size1, sizeof(addr0), pFile);
+        fwrite(rgbout, rgbsize, sizeof(rgbout), pFile);
         fclose (pFile);
     }
+    free(rgbout);
+    free(combined);
 
     done = stop();
     return done;
@@ -157,16 +169,15 @@ void NV21_TO_RGB24(unsigned char *yuyv, unsigned char *rgb, int width, int heigh
  
         for(i = 0; i < height; i++){
             for(j = 0; j < width; j ++){
-                //nv_index = (rgb_index / 2 - width / 2 * ((i + 1) / 2)) * 2;
                 nv_index = i / 2  * width + j - j % 2;
  
                 y = yuyv[rgb_index];
                 u = yuyv[nv_start + nv_index ];
                 v = yuyv[nv_start + nv_index + 1];
  
-                r = y + (140 * (v-128))/100;  //r
-                g = y - (34 * (u-128))/100 - (71 * (v-128))/100; //g
-                b = y + (177 * (u-128))/100; //b
+                r = y + (140 * (v-128))/100;
+                g = y - (34 * (u-128))/100 - (71 * (v-128))/100;
+                b = y + (177 * (u-128))/100;
  
                 if(r > 255)   r = 255;
                 if(g > 255)   g = 255;
@@ -176,19 +187,12 @@ void NV21_TO_RGB24(unsigned char *yuyv, unsigned char *rgb, int width, int heigh
                 if(b < 0)     b = 0;
  
                 index = rgb_index % width + (height - i - 1) * width;
-                //rgb[index * 3+0] = b;
-                //rgb[index * 3+1] = g;
-                //rgb[index * 3+2] = r;
  
-                                 //Invert the image
-                //rgb[height * width * 3 - i * width * 3 - 3 * j - 1] = b;
-                //rgb[height * width * 3 - i * width * 3 - 3 * j - 2] = g;
-                //rgb[height * width * 3 - i * width * 3 - 3 * j - 3] = r;
- 
-                                 //Front image
-                rgb[i * width * 3 + 3 * j + 0] = b;
+                //Front image
+                rgb[i * width * 3 + 3 * j + 0] = r;
                 rgb[i * width * 3 + 3 * j + 1] = g;
-                rgb[i * width * 3 + 3 * j + 2] = r;
+                rgb[i * width * 3 + 3 * j + 2] = b;
+                
  
                 rgb_index++;
             }
