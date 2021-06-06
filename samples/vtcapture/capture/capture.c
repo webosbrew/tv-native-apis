@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 
     sleep(2);
 
-    do{
+
         done = vtCapture_currentCaptureBuffInfo(driver, &buff);
         if (done == 0 ) {
             addr0 = buff.start_addr0;
@@ -141,6 +141,8 @@ int main(int argc, char *argv[])
         }
         fprintf(stderr, "vtCapture_currentCaptureBuffInfo done!\naddr0: %p addr1: %p size0: %d size1: %d\n", addr0, addr1, size0, size1);
 
+        
+    do{
         //Combine two Image Buffers to one and convert to RGB24
         char *first, *secound;
         first = (char *) malloc(size0*sizeof(char));
