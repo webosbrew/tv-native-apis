@@ -1,14 +1,15 @@
 Demonstration of capturing with libvtcapture.
 libvtcapture is a library used on modern (+2020 4k LG) TVs for capturing the displayed video
 
-#Usage & Permission information
-###Usage
+## Usage & Permission information
+
+### Usage
 
 With root:
 `ssh root@IPtoTV 'bin/vtcapture-capture' | ffplay -f mjpeg -`
 
 
-###Permission information
+### Permission information
 LG seems to started with per executeable permissions. So each service has its own permissions depending on roles, services, apis, clients and groups. They are laying under `/usr/share/luna-service2/manifests.d/`.
 To get the capture with custombinarys working, we have to edit a few files and add our exe to the "trusted services". If you do not do this, you will recieve a error like this one: `LSRegisterPubPriv FAILED`
 For our capture example, we have to allow it for using the capture abilities:
