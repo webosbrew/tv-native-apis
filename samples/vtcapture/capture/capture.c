@@ -5,8 +5,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <jpeglib.h>
-
+#include <signal.h>
 #include <vtcapture/vtCaptureApi_c.h>
+
+#define CRLF() fwrite("\r\n", 1, 2, stdout)
 
 
 const VT_CALLER_T caller[24] = "com.webos.tbtest.cap";
@@ -28,23 +30,37 @@ char *rgbout;
 
 int isrunning = 0;
 
+void sighandle(int sig);
 void NV21_TO_RGB24(unsigned char *yuyv, unsigned char *rgb, int width, int height);
 int stop();
 int finalize();
 void write_JPEG_stdout(int quality);
 
-#define CRLF() fwrite("\r\n", 1, 2, stdout)
+void sighandle(int sig){
+     fprintf(stderr, "\nTermination-signal recieved. Terminating.. \n");
+
+    int done = 0;
+    if(isrunning == 1){
+        done = stop();
+        exit(done);
+    }else{
+        done = finalize();
+        exit(done);
+    }
+}
 
 int main(int argc, char *argv[])
 {
+    signal(SIGINT, sighandle);
+
     int done;
     int ex;
     //Capture properties for vtCapture_preprocess - _LibVtCaptureProperties
     int dumping = 2;
     int capturex = 0;
     int capturey = 0;
-    int captureWidth = 640;
-    int captureHeight = 360;
+    int captureWidth = 320;
+    int captureHeight = 180;
     int framerate = 30;
     int buffer_count = 3;
 
