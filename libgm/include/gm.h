@@ -15,3 +15,4 @@ typedef struct GM_SURFACE_T
 int GM_CreateSurface(uint32_t width, uint32_t height, uint32_t dummy, GM_SURFACE* surface_info);
 int GM_DestroySurface(uint32_t surfaceID);
 int GM_CaptureGraphicScreen(uint32_t surfaceID, uint32_t* width, uint32_t* height);
+int GM_GetGraphicResolution(uint16_t *width, uint16_t *height);

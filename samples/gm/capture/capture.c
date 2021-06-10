@@ -8,6 +8,8 @@
 
 GM_SURFACE surfaceInfo;
 
+unsigned short nativeWidth = 0;
+unsigned short nativeHeight = 0;
 int captureWidth = 1920;
 int captureHeight = 1080;
 int framerate = 0;
@@ -24,6 +26,19 @@ int main(int argc, char *argv[])
 
     if (argc >= 4) {
         framerate = atoi(argv[3]);
+    }
+
+    if ((res = GM_GetGraphicResolution(&nativeWidth, &nativeHeight)) != 0) {
+        fprintf(stderr, "[GM Capture Sample] GM_GetGraphicResolution Failed: %x\n", res);
+        return 5;
+    }
+
+    fprintf(stderr, "[GM Capture Sample] Native resolution: %dx%d\n", nativeWidth, nativeHeight);
+    fprintf(stderr, "[GM Capture Sample] Capture resolution: %dx%d\n", captureWidth, captureHeight);
+
+    if (captureWidth > nativeWidth || captureHeight > nativeHeight) {
+        fprintf(stderr, "[GM Capture Sample] Capture resolution can't exceed native resolution...\n");
+        return 6;
     }
 
     if ((res = GM_CreateSurface(captureWidth, captureHeight, 0, &surfaceInfo)) != 0) {

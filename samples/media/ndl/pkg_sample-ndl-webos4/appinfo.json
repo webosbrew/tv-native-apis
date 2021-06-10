@@ -1,9 +1,0 @@
-{
-    "id": "org.webosbrew.sample.ndl-webos4",
-    "version": "1.0.0",
-    "vendor": "webOS Homebrew Project",
-    "type": "native",
-    "main": "sample-ndl-webos4",
-    "title": "NDL Sample",
-    "icon": "icon.png"
-}
