@@ -6,14 +6,20 @@
 #include <unistd.h>
 #include <jpeglib.h>
 #include <signal.h>
-#include <halgal/hal_gal_c.h>
+#include <gm-wayland/gmw_c.h>
 
 #define CRLF() fwrite("\r\n", 1, 2, stdout)
 
 int isrunning = 0;
 
+HAL_GAL_SURFACE_INFO_T *surfinfo;
+HAL_GAL_DRAW_SETTINGS_T *settings;
+HAL_GAL_RECT_T *rect;
+HAL_GAL_DRAW_FLAGS_T *drawflags;
+int32_t *palette;
 
 void sighandle(int sig);
+int stop();
 void NV21_TO_RGB24(unsigned char *yuyv, unsigned char *rgb, int width, int height);
 void write_JPEG_stdout(int quality);
 
@@ -36,8 +42,80 @@ int main(int argc, char *argv[])
     int done;
     int ex;
 
-    HAL_GAL_PIXEL_FORMAT_T pixformat = 0;
+     //Pointer of Exitcode from createSurface() 
+    drawflags = malloc(sizeof(int)); //default = 0
 
+    settings = malloc(3*sizeof(int));
+    settings->blend1 = 2; //default = 2(1-10 possible) - blend? setting
+    settings->blend2 = 1;
+    settings->blend3 = 0;
+
+    rect = malloc(4*sizeof(int16_t));
+    rect->x = 0;
+    rect->y = 0;
+    rect->w = 1280;
+    rect->h = 720;
+/*  int32_t offset = 2;
+    int32_t physicalAddress = 0; //should be dst framebuffer
+    int16_t pitch = 0;
+    int16_t bpp = 0;
+
+    int32_t pixelFormat = 0;
+    int32_t paletteInfo = 0;
+    int32_t property = 0;
+    int32_t vendorData = 0; */
+    int32_t width = 1280;
+    int32_t height = 720;
+    palette = malloc(1028);
+
+    surfinfo = malloc(1056);
+    surfinfo->paletteInfo = palette;
+/*     surfinfo.offset = &offset;
+    surfinfo.physicalAddress = &physicalAddress;
+    surfinfo.pitch = pitch;
+    surfinfo.bpp = bpp;
+    surfinfo.width = width;
+    surfinfo.height = height;
+    surfinfo.pixelFormat = &pixelFormat;
+    surfinfo.paletteInfo = &paletteInfo;
+    surfinfo.property = &property;
+    surfinfo.vendorData = &vendorData;  */
+
+
+    done = GM_CreateSurface(width, height, 0, surfinfo);
+    if(done != 0){
+        fprintf(stderr, "GM_CreateSurface failed: %x\nQuitting...\n", done);
+        ex = stop();
+        return ex;
+    }
+    fprintf(stderr, "GM_CreateSurface done! Address %p\n", surfinfo->offset);
+    fprintf(stderr, "Surfinfo: Offset: %p, physicalAddress: %p, pitch: %d, bpp: %d, width: %d, height: %d, pixelFormat: %p, paletteInfo: %p, property: %d, vendorData: %d\n", surfinfo->offset, surfinfo->physicalAddress, surfinfo->pitch, surfinfo->bpp, surfinfo->width, surfinfo->height, surfinfo->pixelFormat, surfinfo->paletteInfo, surfinfo->property, surfinfo->vendorData);
+
+    done = GM_FillRectangle(surfinfo, rect, 0, drawflags, settings);
+    if(done != 0){
+        fprintf(stderr, "GM_FillRectangle failed: %x | Settings: %d\nQuitting...\n", done, settings->blend1);
+        ex = stop();
+        return ex;
+    }
+    ex = stop();
+    free(surfinfo);
+    free(rect);
+    return ex; 
+    
+}
+
+int stop()
+{
+    fprintf(stderr, "-- Quit called! --\n");
+    int ex;
+    ex = GM_DestroySurface(surfinfo);
+    if(ex == 0){
+        fprintf(stderr, "Quitting: GM_DestroySurface done!\n");
+        fprintf(stderr, "Quitting!\n");
+        return 0;
+    }
+    fprintf(stderr, "Quitting with errors: %x!\n", ex);
+    return 1;
 }
 
 /*     printf("HTTP/1.1 200 OK");

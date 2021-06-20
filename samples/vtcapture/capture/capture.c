@@ -242,6 +242,7 @@ int stop()
     if (done != 0)
     {
         fprintf(stderr, "vtCapture_stop failed: %x\nQuitting...\n", done);
+        done = finalize();
         return done;
     }
     fprintf(stderr, "vtCapture_stop done!\n");
@@ -263,14 +264,14 @@ int finalize()
                 fprintf(stderr, "Quitting: Driver released!\n");
                 memset(&client,0,127);
                 fprintf(stderr, "Quitting!\n");
-                return -1;
+                return 0;
             }
             fprintf(stderr, "Quitting: vtCapture_finalize failed: %x\n", done);
         }
     vtCapture_finalize(driver, client);
     vtCapture_release(driver);
     fprintf(stderr, "Quitting with errors: %x!\n", done);
-    return 0;
+    return 1;
 }
 
 //Credits: https://github.com/webosbrew/tv-native-apis/blob/main/samples/vt/capture/capture.c
