@@ -12,6 +12,7 @@ add_subdirectory(libvt)
 add_subdirectory(libgm)
 add_subdirectory(libvtcapture)
 add_subdirectory(libgm-wayland)
+add_subdirectory(libhalgal)
 
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     add_subdirectory(samples)
