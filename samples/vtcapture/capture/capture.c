@@ -7,6 +7,12 @@
 #include <jpeglib.h>
 #include <signal.h>
 #include <vtcapture/vtCaptureApi_c.h>
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
+#include <opencv2/core/core_c.h>
+#include <opencv2/imgproc/imgproc_c.h>
+#include <opencv2/imgcodecs/imgcodecs_c.h>
+
 
 #define CRLF() fwrite("\r\n", 1, 2, stdout)
 
@@ -36,6 +42,8 @@ int stop();
 int finalize();
 void write_JPEG_stdout(int quality);
 
+
+
 void sighandle(int sig){
      fprintf(stderr, "\nTermination-signal recieved. Terminating.. \n");
 
@@ -59,8 +67,8 @@ int main(int argc, char *argv[])
     int dumping = 2;
     int capturex = 0;
     int capturey = 0;
-    int captureWidth = 320;
-    int captureHeight = 180;
+    int captureWidth = 960;
+    int captureHeight = 540;
     int framerate = 30;
     int buffer_count = 3;
 
@@ -111,9 +119,6 @@ int main(int argc, char *argv[])
     }
     fprintf(stderr, "vtCapture_preprocess done!\n");
 
-    //_LibVtCaptureCapabilityInfo *test;
-    //done = vtCapture_capabilityInfo(driver, client, test);
-
     done = vtCapture_planeInfo(driver, client, &plane);
     if (done == 0 ) {
         stride = plane.stride;
@@ -160,7 +165,7 @@ int main(int argc, char *argv[])
     int comsize;  
     comsize = size0+size1;
 //    comsize = size0;
-    do{
+//    do{
         //Combine two Image Buffers to one and convert to RGB24
         char *combined = (char *) malloc(comsize);
         int rgbsize = sizeof(combined)*w*h*3;
@@ -168,24 +173,44 @@ int main(int argc, char *argv[])
         memcpy(combined, addr0, size0);
         memcpy(combined+size0, addr1, size1);
 
-        NV21_TO_RGB24(combined, rgbout, w, h);
 
-        write_JPEG_stdout(85);
 
-        free(rgbout);
-        free(combined);
+//        NV21_TO_RGB24(combined, rgbout, w, h);
+//        IplImage *orig = (IplImage *) malloc(comsize*2); // = cvCreateImage(cvSize(w,h),IPL_DEPTH_8U,4);
+//        CvMat mat;
+//        cvInitMatHeader(&mat, (h*1,5), w, IPL_DEPTH_8U, combined,CV_AUTOSTEP);
+//        IplImage *orig = cvDecodeImage(&mat, CV_LOAD_IMAGE_COLOR);
+        IplImage *orig = cvCreateImage(cvSize(w,(h+h/2)),IPL_DEPTH_8U,1);
+        IplImage *dst = cvCreateImage(cvSize(w,h),IPL_DEPTH_8U,4);
+        if(orig)
+        {
+            memcpy(orig->imageData,combined,comsize);
+            cvCvtColor(orig, dst, CV_YUV2RGBA_NV21);
+            cvSaveImage("/tmp/test.png", dst, 0);
+            cvReleaseImage(&orig);
+            cvReleaseImage(&dst);
+        }else{
+            fprintf(stderr, "ERROR: Create Image failed!\n");
+        }
+        
+//        cvCvtColor(&mat, rgbout, 96);
 
-    /*
+//        write_JPEG_stdout(85);
+
+
+
+    
         FILE * pFile;
-        pFile = fopen ("/tmp/myfile.bin","wb");
+        pFile = fopen ("/tmp/vtcap.bin","wb");
         if (pFile!=NULL)
         {
             fwrite(rgbout, rgbsize, sizeof(rgbout), pFile);
             fclose (pFile);
         }
-    */
-
-    }while(1==1);
+    
+        free(rgbout);
+        free(combined);
+//    }while(1==1);
 
 
     done = stop();

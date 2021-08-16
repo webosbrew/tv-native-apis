@@ -26,6 +26,7 @@ int file;
 
 int stop();
 void sighandle(int sig);
+int blend(unsigned char *result, unsigned char *fg, unsigned char *bg, int leng);
 
 void sighandle(int signal)
 {
@@ -124,7 +125,6 @@ int main(int argc, char *argv[])
     }
 
     addr = (char *) mmap(0, len, 3, 1, fd, surfaceInfo.offset);
-
     fprintf(stderr, "Surface length: %d || Virtual address: %p\nWriting to file..\n", len, &addr);
 
     FILE * pFile;
@@ -136,9 +136,8 @@ int main(int argc, char *argv[])
     }
 
     munmap(addr, len);
-
-
     done = close(fd);
+
 
     if (done != 0){
         fprintf(stderr, "gfx close fail result: %d\n", done);
@@ -201,4 +200,33 @@ int stop()
     }
     fprintf(stderr, "HAL_GAL_DestroySurface done! %d\n", done);
     return done;
+}
+
+int blend(unsigned char *result, unsigned char *fg, unsigned char *bg, int leng)
+{
+    int rIndex, gIndex, bIndex, aIndex;
+    unsigned int alpha,iAlpha;
+
+    for (int i = 0; i < leng; i += 4){
+        bIndex = i;
+        gIndex = i + 1;
+        rIndex = i + 2;
+        aIndex = i + 3;
+
+        alpha = fg[aIndex] + 1;
+        iAlpha = 256 - fg[aIndex];
+        
+        result[bIndex] = (unsigned char)((alpha * fg[bIndex] + iAlpha * bg[bIndex]) >> 8);;
+        result[gIndex] = (unsigned char)((alpha * fg[gIndex] + iAlpha * bg[gIndex]) >> 8);;
+        result[rIndex] = (unsigned char)((alpha * fg[rIndex] + iAlpha * bg[rIndex]) >> 8);;
+        result[aIndex] = 0xff;
+ //       fprintf(stderr, "leng %d  bIndex %d  gIndex %d  rIndex %d  aIndex %d\n", leng, bIndex, gIndex, rIndex, aIndex);
+    }
+/*     unsigned int alpha = fg[3] + 1;
+    unsigned int inv_alpha = 256 - fg[3];
+    result[0] = (unsigned char)((alpha * fg[0] + inv_alpha * bg[0]) >> 8);
+    result[1] = (unsigned char)((alpha * fg[1] + inv_alpha * bg[1]) >> 8);
+    result[2] = (unsigned char)((alpha * fg[2] + inv_alpha * bg[2]) >> 8);
+    result[3] = 0xff;
+*/
 }
