@@ -44,10 +44,10 @@ void sighandle(int signal)
 
 int main(int argc, char *argv[])
 {
-//    if (getenv("XDG_RUNTIME_DIR") == NULL)
-//    {
-//        setenv("XDG_RUNTIME_DIR", "/tmp/xdg", 1);
-//   }
+    if (getenv("XDG_RUNTIME_DIR") == NULL)
+    {
+        setenv("XDG_RUNTIME_DIR", "/tmp/xdg", 1);
+    }
     signal(SIGINT, sighandle);
 
     int captureWidth = 960;
@@ -60,8 +60,6 @@ int main(int argc, char *argv[])
         return done;
     }
     fprintf(stderr, "HAL_GAL_Init done! Exit: %d\n", done);   
-
-  //  memset(&surfaceInfo,0,1096);
 
     if ((done = HAL_GAL_CreateSurface(captureWidth, captureHeight, 0, &surfaceInfo)) != 0) {
         fprintf(stderr, "HAL_GAL_CreateSurface failed: %x\n", done);
@@ -97,12 +95,6 @@ int main(int argc, char *argv[])
     }
     fprintf(stderr, "HAL_GAL_CaptureFrameBuffer done! %x\n", done);
 
-/*     if ((done = HAL_GAL_FillRectangle(&surfaceInfo, &rect, color, &flags, &settings)) != 0) {
-        fprintf(stderr, "HAL_GAL_FillRectangle failed: %x\n", done);
-        done = stop();
-        return done;
-    }
-    fprintf(stderr, "HAL_GAL_FillRectangle done! Exit: %d\n", done) */;
     isrunning = 1;
 
     size_t len; 
@@ -152,47 +144,11 @@ int main(int argc, char *argv[])
 
     done = stop();
     return done;
-//    do {
-
-    
-/*     char *addr1 = (char *) malloc(surfaceInfo.property); 
-    addr1 = mmap(0, surfaceInfo.property, file, 3, 1, surfaceInfo.offset);
-
-    char *dst = (char *) malloc(surfaceInfo.property);
-
-    memcpy(&dst, &addr1, len);
-
-
-
-    memcpy(dst, addr1, len); */
-
-/*         if (write(1, &addr, surfaceInfo.property) == -1) {
-            perror("write failed");
-            done = stop();
-            return done;
-        } */
-
-
-
-
-//        if (framerate > 0) {
-//            usleep (1000000 / framerate);
-//        }
-//    } while (framerate > 0 || app_quit == false);
-
-/*     fprintf(stderr, "Capture ended! (%dx%d)\n", captureWidth, captureHeight);
-    close(file);
-    fprintf(stderr, "1Capture ended! (%dx%d)\n", captureWidth, captureHeight);
-    free(dst);
-    //free(addr1);
-    fprintf(stderr, "2Capture ended! (%dx%d)\n", captureWidth, captureHeight); */
-}
 
 int stop()
 {
     int done = 0;
 
-//    close(file);
     isrunning = 0;
     if ((done = HAL_GAL_DestroySurface(&surfaceInfo)) != 0) {
         fprintf(stderr, "HAL_GAL_DestroySurface failed: %d\n", done);
@@ -204,9 +160,6 @@ int stop()
 
 int blend(unsigned char *result, unsigned char *fg, unsigned char *bg, int leng)
 {
-    int rIndex, gIndex, bIndex, aIndex;
-    unsigned int alpha,iAlpha;
-
     for (int i = 0; i < leng; i += 4){
         bIndex = i;
         gIndex = i + 1;
@@ -220,13 +173,5 @@ int blend(unsigned char *result, unsigned char *fg, unsigned char *bg, int leng)
         result[gIndex] = (unsigned char)((alpha * fg[gIndex] + iAlpha * bg[gIndex]) >> 8);;
         result[rIndex] = (unsigned char)((alpha * fg[rIndex] + iAlpha * bg[rIndex]) >> 8);;
         result[aIndex] = 0xff;
- //       fprintf(stderr, "leng %d  bIndex %d  gIndex %d  rIndex %d  aIndex %d\n", leng, bIndex, gIndex, rIndex, aIndex);
     }
-/*     unsigned int alpha = fg[3] + 1;
-    unsigned int inv_alpha = 256 - fg[3];
-    result[0] = (unsigned char)((alpha * fg[0] + inv_alpha * bg[0]) >> 8);
-    result[1] = (unsigned char)((alpha * fg[1] + inv_alpha * bg[1]) >> 8);
-    result[2] = (unsigned char)((alpha * fg[2] + inv_alpha * bg[2]) >> 8);
-    result[3] = 0xff;
-*/
 }

@@ -9,16 +9,11 @@
 #include <pthread.h>
 #include <string.h>
 #include <sys/mman.h>
-
+#include <jpeglib.h>
 #include <halgal.h>
 #include <vtcapture/vtCaptureApi_c.h>
 
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
-#include <opencv2/core/core_c.h>
-#include <opencv2/imgproc/imgproc_c.h>
-#include <opencv2/imgcodecs/imgcodecs_c.h>
- 
+#define CRLF() fwrite("\r\n", 1, 2, stdout)
 
 //HAL_GAL 
 HAL_GAL_SURFACE surfaceInfo;
@@ -43,7 +38,13 @@ VT_REGION_T activeregion;
 _LibVtCaptureBufferInfo buff;
 char *addr0, *addr1;
 int size0, size1;
-char *rgbout;
+char *gesamt;
+int comsize;  
+char *combined;
+int rgbasize;
+int rgbsize;   
+char *rgbout;   
+char *hal;
 
 //All
 int stride, x, y, w, h, xa, ya, wa, ha;
@@ -53,6 +54,12 @@ int done;
 int ex;
 int file;
 
+int rIndex, gIndex, bIndex, aIndex;
+unsigned int alpha,iAlpha;
+
+size_t len; 
+char *addr;
+int fd;
 
 int stop();
 int stop_hal();
@@ -60,6 +67,8 @@ int stop_vt();
 int finalize();
 void sighandle(int sig);
 int blend(unsigned char *result, unsigned char *fg, unsigned char *bg, int leng);
+void NV21_TO_RGBA(unsigned char *yuyv, unsigned char *rgba, int width, int height);
+void write_JPEG_stdout(int quality);
 
 void sighandle(int signal)
 {
@@ -77,18 +86,18 @@ void sighandle(int signal)
 
 int main(int argc, char *argv[])
 {
-//    if (getenv("XDG_RUNTIME_DIR") == NULL)
-//    {
-//        setenv("XDG_RUNTIME_DIR", "/tmp/xdg", 1);
-//   }
+    if (getenv("XDG_RUNTIME_DIR") == NULL)
+    {
+        setenv("XDG_RUNTIME_DIR", "/tmp/xdg", 1);
+    }
     signal(SIGINT, sighandle);
 
     int dumping = 2;
     int capturex = 0;
     int capturey = 0;
-    int captureWidth = 960; //both
-    int captureHeight = 540; //both
-    int framerate = 30;
+    int captureWidth = 360; //both
+    int captureHeight = 180; //both
+    int framerate = 15;
     int buffer_count = 3;
 
     VT_DUMP_T dump = dumping;
@@ -110,13 +119,12 @@ int main(int argc, char *argv[])
     }
     fprintf(stderr, "HAL_GAL_Init done! Exit: %d\n", done);   
 
-  //  memset(&surfaceInfo,0,1096);
-
     if ((done = HAL_GAL_CreateSurface(captureWidth, captureHeight, 0, &surfaceInfo)) != 0) {
         fprintf(stderr, "HAL_GAL_CreateSurface failed: %x\n", done);
         done = stop();
         return done;
     }
+
     fprintf(stderr, "HAL_GAL_CreateSurface done! SurfaceID: %d\n", surfaceInfo.vendorData);
     fprintf(stderr, "offset: %p\n", surfaceInfo.offset);
     fprintf(stderr, "physicalAddress: %p\n", surfaceInfo.physicalAddress);
@@ -149,10 +157,6 @@ int main(int argc, char *argv[])
 
     isrunning = 1;
 
-    size_t len; 
-    char *addr;
-    int fd;
-
     fd = open("/dev/gfx",2);
     if (fd < 0){
         fprintf(stderr, "HAL_GAL: gfx open fail result: %d\n", fd);
@@ -181,6 +185,7 @@ int main(int argc, char *argv[])
     if (done != 0) {
         fprintf(stderr, "vtCapture_init failed: %x\nQuitting...\n", done);
         ex = finalize();
+        ex += stop_hal();
         return ex;
     }
     fprintf(stderr, "vtCapture_init done!\nCaller_ID: %s Client ID: %s \n", caller, client);
@@ -189,6 +194,7 @@ int main(int argc, char *argv[])
     if (done != 0) {
         fprintf(stderr, "vtCapture_preprocess failed: %x\nQuitting...\n", done);
         ex = finalize();
+        ex += stop_hal();
         return ex;
     }
     fprintf(stderr, "vtCapture_preprocess done!\n");
@@ -234,123 +240,71 @@ int main(int argc, char *argv[])
     }else{
         fprintf(stderr, "vtCapture_currentCaptureBuffInfo failed: %x\nQuitting...\n", done);
         ex = finalize();
+        ex += stop_hal();
         return ex;
     }
     fprintf(stderr, "vtCapture_currentCaptureBuffInfo done!\naddr0: %p addr1: %p size0: %d size1: %d\n", addr0, addr1, size0, size1);
 
 
-    int comsize;  
     comsize = size0+size1;
-    char *combined = (char *) malloc(comsize);
+    combined = (char *) malloc(comsize);
 
-    IplImage *halImg = cvCreateImage(cvSize(captureWidth,captureHeight),IPL_DEPTH_8U,4);
-    IplImage *combImg = cvCreateImage(cvSize(captureWidth,captureHeight),IPL_DEPTH_8U,4);
+    rgbasize = sizeof(combined)*stride*h*4;
+    rgbsize = sizeof(combined)*stride*h*3;   
+    rgbout = (char *) malloc(rgbasize);   
+    gesamt = (char *) malloc(len);
+    hal = (char *) malloc(len);
 
-    IplImage *vtYuv = cvCreateImage(cvSize(w,(h+h/2)),IPL_DEPTH_8U,1);
-    IplImage *vtRgba = cvCreateImage(cvSize(w,h),IPL_DEPTH_8U,4);
+    addr = (char *) mmap(0, len, 3, 1, fd, surfaceInfo.offset);
+    int framecount = 0;
 
     do {
+        
         memcpy(combined, addr0, size0);
         memcpy(combined+size0, addr1, size1);
-        if(vtYuv){
-            memcpy(vtYuv->imageData,combined,comsize);
-            cvCvtColor(vtYuv, vtRgba, CV_YUV2RGBA_NV21);
-        }else{
-            fprintf(stderr, "ERROR: Create vtYuv IplImage failed!\n");
-        }
+
+        NV21_TO_RGBA(combined, rgbout, stride, h);
 
         if ((done = HAL_GAL_CaptureFrameBuffer(&surfaceInfo)) != 0) {
             fprintf(stderr, "HAL_GAL_CaptureFrameBuffer failed: %x\n", done);
             done = stop();
             return done;
         }
-        addr = (char *) mmap(0, len, 3, 1, fd, surfaceInfo.offset);
 
-        if(halImg){
-            memcpy(halImg->imageData,addr,len);
-        }else{
-            fprintf(stderr, "ERROR: Create halImg IplImage failed!\n");
-        }
-        munmap(addr, len);
+        memcpy(hal,addr,len);
 
-        if(combImg){
-            blend(combImg->imageData, halImg->imageData, vtRgba->imageData, len);
-        }else{
-            fprintf(stderr, "ERROR: Create combImg IplImage failed!\n");
-        }
-        cvEncodeImage(".jpg", combImg, 0);
-    //    cvSaveImage("/tmp/comb.png", combImg, 0);
+        blend(gesamt, hal, rgbout, len);
 
+        write_JPEG_stdout(85);
+        
+        if (framerate > 0) {
+            usleep (1000000 / framerate);
+        } 
 
-
-        if (write(1, combImg->imageData, 1996800) == -1) {
-                perror("write failed");
-                done = stop();
-                return done;
-        }
-     
     } while (framerate > 0 || app_quit == false);
-
-
-    cvReleaseImage(&halImg);
-    cvReleaseImage(&combImg);
-    cvReleaseImage(&vtYuv);
-    cvReleaseImage(&vtRgba);
-    free(combined);
-    done = close(fd);
-
-    if (done != 0){
-        fprintf(stderr, "gfx close fail result: %d\n", done);
-        done = stop();
-        return done;
-
-    }else{
-        fprintf(stderr, "gfx close ok result: %d\n", done);
-    }
-
-    fprintf(stderr, "Capture ended! (%dx%d)\n", captureWidth, captureHeight);
 
     done = stop();
     return done;
-//    do {
 
-    
-/*     char *addr1 = (char *) malloc(surfaceInfo.property); 
-    addr1 = mmap(0, surfaceInfo.property, file, 3, 1, surfaceInfo.offset);
-
-    char *dst = (char *) malloc(surfaceInfo.property);
-
-    memcpy(&dst, &addr1, len);
-
-
-
-    memcpy(dst, addr1, len); */
-
-/*         if (write(1, &addr, surfaceInfo.property) == -1) {
-            perror("write failed");
-            done = stop();
-            return done;
-        } */
-
-
-
-
-//        if (framerate > 0) {
-//            usleep (1000000 / framerate);
-//        }
-//    } while (framerate > 0 || app_quit == false);
-
-/*     fprintf(stderr, "Capture ended! (%dx%d)\n", captureWidth, captureHeight);
-    close(file);
-    fprintf(stderr, "1Capture ended! (%dx%d)\n", captureWidth, captureHeight);
-    free(dst);
-    //free(addr1);
-    fprintf(stderr, "2Capture ended! (%dx%d)\n", captureWidth, captureHeight); */
 }
 
 int stop(){
     fprintf(stderr, "-- Quit called! --\n");
-    int done = 0;
+
+    int done;
+    if(isrunning == 1){
+        munmap(addr, len);
+        free(combined);
+        free(rgbout);
+        free(gesamt);
+        done = close(fd);
+        if (done != 0){
+            fprintf(stderr, "gfx close fail result: %d\n", done);
+        }else{
+            fprintf(stderr, "gfx close ok result: %d\n", done);
+        }
+    }
+    done = 0;
     done = stop_vt();
     done += stop_hal();
     return done;
@@ -373,12 +327,10 @@ int stop_vt(){
     return done;
 }
 
-int stop_hal()
-{
+int stop_hal(){
     int done = 0;
-
-//    close(file);
     isrunning = 0;
+
     if ((done = HAL_GAL_DestroySurface(&surfaceInfo)) != 0) {
         fprintf(stderr, "Quitting: HAL_GAL_DestroySurface failed: %d\n", done);
         return done;
@@ -387,8 +339,7 @@ int stop_hal()
     return done;
 }
 
-int finalize()
-{
+int finalize(){
     int done;
     done = vtCapture_postprocess(driver, client);
         if (done == 0){
@@ -410,12 +361,7 @@ int finalize()
     return 1;
 }
 
-int blend(unsigned char *result, unsigned char *fg, unsigned char *bg, int leng)
-{
-    int rIndex, gIndex, bIndex, aIndex;
-    unsigned int alpha,iAlpha;
-    int end;
-
+int blend(unsigned char *result, unsigned char *fg, unsigned char *bg, int leng){
     for (int i = 0; i < leng; i += 4){
         bIndex = i;
         gIndex = i + 1;
@@ -430,4 +376,95 @@ int blend(unsigned char *result, unsigned char *fg, unsigned char *bg, int leng)
         result[rIndex] = (unsigned char)((alpha * fg[rIndex] + iAlpha * bg[rIndex]) >> 8);;
         result[aIndex] = 0xff;
     }
+}
+
+//Credits: https://www.programmersought.com/article/18954751423/
+void NV21_TO_RGBA(unsigned char *yuyv, unsigned char *rgba, int width, int height){
+        const int nv_start = width * height ;
+        int  index = 0, rgb_index = 0;
+        uint8_t y, u, v;
+        int r, g, b, nv_index = 0, i, j;
+        int a = 255;
+ 
+        for(i = 0; i < height; i++){
+            for(j = 0; j < width; j ++){
+
+                nv_index = i / 2  * width + j - j % 2;
+ 
+                y = yuyv[rgb_index];
+                u = yuyv[nv_start + nv_index ];
+                v = yuyv[nv_start + nv_index + 1];
+ 
+                r = y + (140 * (v-128))/100;  //r
+                g = y - (34 * (u-128))/100 - (71 * (v-128))/100; //g
+                b = y + (177 * (u-128))/100; //b
+ 
+                if(r > 255)   r = 255;
+                if(g > 255)   g = 255;
+                if(b > 255)   b = 255;
+                if(r < 0)     r = 0;
+                if(g < 0)     g = 0;
+                if(b < 0)     b = 0;
+ 
+                index = rgb_index % width + (height - i - 1) * width;
+ 
+                rgba[i * width * 4 + 4 * j + 0] = b;
+                rgba[i * width * 4 + 4 * j + 1] = g;
+                rgba[i * width * 4 + 4 * j + 2] = r;   
+                rgba[i * width * 4 + 4 * j + 3] = a;               
+                rgb_index++;
+
+            }
+        }
+}
+
+//Credits: https://github.com/webosbrew/tv-native-apis/blob/main/samples/vt/capture/capture.c
+void write_JPEG_stdout(int quality){
+
+    struct jpeg_compress_struct cinfo;
+    struct jpeg_error_mgr jerr;
+
+    JSAMPROW row_pointer[1]; /* pointer to JSAMPLE row[s] */
+    int row_stride;          /* physical row width in image buffer */
+
+    cinfo.err = jpeg_std_error(&jerr);
+    jpeg_create_compress(&cinfo);
+
+    unsigned long jpegSize = 0;
+    unsigned char *jpegBuf = NULL;
+
+    jpeg_mem_dest(&cinfo, &jpegBuf, &jpegSize);
+
+    cinfo.image_width = w; /* image width and height, in pixels */
+    cinfo.image_height = h;
+    cinfo.input_components = 4;          /* # of color components per pixel */
+    cinfo.in_color_space = JCS_EXT_BGRX; /* colorspace of input image */
+
+    jpeg_set_defaults(&cinfo);
+    jpeg_set_quality(&cinfo, quality, TRUE /* limit to baseline-JPEG values */);
+
+    jpeg_start_compress(&cinfo, TRUE);
+
+    row_stride = stride * 4; /* JSAMPLEs per row in image_buffer */
+
+    while (cinfo.next_scanline < cinfo.image_height)
+    {
+        row_pointer[0] = &gesamt[cinfo.next_scanline * row_stride];
+        (void)jpeg_write_scanlines(&cinfo, row_pointer, 1);
+    }
+
+    jpeg_finish_compress(&cinfo);
+
+    printf("--myboundary");
+    CRLF();
+    printf("Content-Type: image/jpeg");
+    CRLF();
+    printf("Content-Length: %d", jpegSize);
+    CRLF();
+    CRLF();
+    fwrite(jpegBuf, 1, jpegSize, stdout);
+    CRLF();
+
+    jpeg_destroy_compress(&cinfo);
+    free(jpegBuf);
 }
