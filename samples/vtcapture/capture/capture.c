@@ -7,12 +7,6 @@
 #include <jpeglib.h>
 #include <signal.h>
 #include <vtcapture/vtCaptureApi_c.h>
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
-#include <opencv2/core/core_c.h>
-#include <opencv2/imgproc/imgproc_c.h>
-#include <opencv2/imgcodecs/imgcodecs_c.h>
-
 
 #define CRLF() fwrite("\r\n", 1, 2, stdout)
 
