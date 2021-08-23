@@ -1,4 +1,4 @@
-# libgm
+# libhalgal
 
 Graphics Manager library
 
