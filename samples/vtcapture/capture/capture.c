@@ -5,8 +5,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <jpeglib.h>
-
+#include <signal.h>
 #include <vtcapture/vtCaptureApi_c.h>
+
+#define CRLF() fwrite("\r\n", 1, 2, stdout)
 
 
 const VT_CALLER_T caller[24] = "com.webos.tbtest.cap";
@@ -28,23 +30,39 @@ char *rgbout;
 
 int isrunning = 0;
 
+void sighandle(int sig);
 void NV21_TO_RGB24(unsigned char *yuyv, unsigned char *rgb, int width, int height);
 int stop();
 int finalize();
 void write_JPEG_stdout(int quality);
 
-#define CRLF() fwrite("\r\n", 1, 2, stdout)
+
+
+void sighandle(int sig){
+     fprintf(stderr, "\nTermination-signal recieved. Terminating.. \n");
+
+    int done = 0;
+    if(isrunning == 1){
+        done = stop();
+        exit(done);
+    }else{
+        done = finalize();
+        exit(done);
+    }
+}
 
 int main(int argc, char *argv[])
 {
+    signal(SIGINT, sighandle);
+
     int done;
     int ex;
     //Capture properties for vtCapture_preprocess - _LibVtCaptureProperties
     int dumping = 2;
     int capturex = 0;
     int capturey = 0;
-    int captureWidth = 640;
-    int captureHeight = 360;
+    int captureWidth = 960;
+    int captureHeight = 540;
     int framerate = 30;
     int buffer_count = 3;
 
@@ -95,9 +113,6 @@ int main(int argc, char *argv[])
     }
     fprintf(stderr, "vtCapture_preprocess done!\n");
 
-    //_LibVtCaptureCapabilityInfo *test;
-    //done = vtCapture_capabilityInfo(driver, client, test);
-
     done = vtCapture_planeInfo(driver, client, &plane);
     if (done == 0 ) {
         stride = plane.stride;
@@ -144,7 +159,7 @@ int main(int argc, char *argv[])
     int comsize;  
     comsize = size0+size1;
 //    comsize = size0;
-    do{
+//    do{
         //Combine two Image Buffers to one and convert to RGB24
         char *combined = (char *) malloc(comsize);
         int rgbsize = sizeof(combined)*w*h*3;
@@ -152,24 +167,44 @@ int main(int argc, char *argv[])
         memcpy(combined, addr0, size0);
         memcpy(combined+size0, addr1, size1);
 
-        NV21_TO_RGB24(combined, rgbout, w, h);
 
-        write_JPEG_stdout(85);
 
-        free(rgbout);
-        free(combined);
+//        NV21_TO_RGB24(combined, rgbout, w, h);
+//        IplImage *orig = (IplImage *) malloc(comsize*2); // = cvCreateImage(cvSize(w,h),IPL_DEPTH_8U,4);
+//        CvMat mat;
+//        cvInitMatHeader(&mat, (h*1,5), w, IPL_DEPTH_8U, combined,CV_AUTOSTEP);
+//        IplImage *orig = cvDecodeImage(&mat, CV_LOAD_IMAGE_COLOR);
+        IplImage *orig = cvCreateImage(cvSize(w,(h+h/2)),IPL_DEPTH_8U,1);
+        IplImage *dst = cvCreateImage(cvSize(w,h),IPL_DEPTH_8U,4);
+        if(orig)
+        {
+            memcpy(orig->imageData,combined,comsize);
+            cvCvtColor(orig, dst, CV_YUV2RGBA_NV21);
+            cvSaveImage("/tmp/test.png", dst, 0);
+            cvReleaseImage(&orig);
+            cvReleaseImage(&dst);
+        }else{
+            fprintf(stderr, "ERROR: Create Image failed!\n");
+        }
+        
+//        cvCvtColor(&mat, rgbout, 96);
 
-    /*
+//        write_JPEG_stdout(85);
+
+
+
+    
         FILE * pFile;
-        pFile = fopen ("/tmp/myfile.bin","wb");
+        pFile = fopen ("/tmp/vtcap.bin","wb");
         if (pFile!=NULL)
         {
             fwrite(rgbout, rgbsize, sizeof(rgbout), pFile);
             fclose (pFile);
         }
-    */
-
-    }while(1==1);
+    
+        free(rgbout);
+        free(combined);
+//    }while(1==1);
 
 
     done = stop();
@@ -226,6 +261,7 @@ int stop()
     if (done != 0)
     {
         fprintf(stderr, "vtCapture_stop failed: %x\nQuitting...\n", done);
+        done = finalize();
         return done;
     }
     fprintf(stderr, "vtCapture_stop done!\n");
@@ -247,14 +283,14 @@ int finalize()
                 fprintf(stderr, "Quitting: Driver released!\n");
                 memset(&client,0,127);
                 fprintf(stderr, "Quitting!\n");
-                return -1;
+                return 0;
             }
             fprintf(stderr, "Quitting: vtCapture_finalize failed: %x\n", done);
         }
     vtCapture_finalize(driver, client);
     vtCapture_release(driver);
     fprintf(stderr, "Quitting with errors: %x!\n", done);
-    return 0;
+    return 1;
 }
 
 //Credits: https://github.com/webosbrew/tv-native-apis/blob/main/samples/vt/capture/capture.c

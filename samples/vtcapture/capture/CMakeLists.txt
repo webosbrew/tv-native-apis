@@ -1,3 +1,4 @@
+
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(JPEG REQUIRED IMPORTED_TARGET libjpeg)
