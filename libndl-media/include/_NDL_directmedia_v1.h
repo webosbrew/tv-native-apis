@@ -1,6 +1,8 @@
 #pragma once
 
-#include <_NDL_directmedia_types.h>
+#include "_NDL_directmedia_types.h"
+
+#define NDL_DIRECTMEDIA_API_VERSION 1
 
 enum NDL_DIRECTAUDIO_CH_
 {

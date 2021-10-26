@@ -1,6 +1,8 @@
 #pragma once
 
-#include <_NDL_directmedia_types.h>
+#include "_NDL_directmedia_types.h"
+
+#define NDL_DIRECTMEDIA_API_VERSION 2
 
 typedef void (*NDLMediaLoadCallback)(int, long long, const char *);
 
@@ -13,6 +15,7 @@ typedef enum NDL_VIDEO_TYPE
     NDL_VIDEO_TYPE_H265 = 2,
     NDL_VIDEO_TYPE_VP9 = 3,
     NDL_VIDEO_TYPE_AV1 = 4,
+    NDL_VIDEO_TYPE_MAX = 0x7FFFFFFF,
 } NDL_VIDEO_TYPE;
 
 typedef enum NDL_AUDIO_TYPE
@@ -20,6 +23,7 @@ typedef enum NDL_AUDIO_TYPE
     NDL_AUDIO_TYPE_PCM = 1,
     NDL_AUDIO_TYPE_MP3 = 2,
     NDL_AUDIO_TYPE_OPUS = 3,
+    NDL_AUDEO_TYPE_MAX = 0x7FFFFFFF,
 } NDL_AUDIO_TYPE;
 
 typedef struct NDL_DIRECTMEDIA_AUDIO_PCM_INFO_T
@@ -76,6 +80,12 @@ typedef struct NDL_DIRECTVIDEO_HDR_INFO_T
     int maxPicAverageLightLevel;
 } NDL_DIRECTVIDEO_HDR_INFO;
 
+/**
+ *
+ * @param info
+ * @param callback
+ * @return 0 if loaded successfully
+ */
 int NDL_DirectMediaLoad(NDL_DIRECTMEDIA_DATA_INFO *info, NDLMediaLoadCallback callback);
 
 int NDL_DirectMediaUnload();

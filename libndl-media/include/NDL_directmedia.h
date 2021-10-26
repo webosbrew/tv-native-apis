@@ -2,10 +2,14 @@
 #include <stddef.h>
 
 #include "_NDL_directmedia_types.h"
-#if NDL_WEBOS5
-#include "_NDL_directmedia_webos5.h"
+#ifndef WEBOS_TARGET_VERSION_MAJOR
+#error "WEBOS_TARGET_VERSION_MAJOR is not defined"
+#elif WEBOS_TARGET_VERSION_MAJOR >= 5
+#include "_NDL_directmedia_v2.h"
+#elif WEBOS_TARGET_VERSION_MAJOR >= 4
+#include "_NDL_directmedia_v1.h"
 #else
-#include "_NDL_directmedia_webos4.h"
+#error "NDL_DirectMedia is only available on webOS 4 and above"
 #endif
 
 /**

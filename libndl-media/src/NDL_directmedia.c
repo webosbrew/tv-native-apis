@@ -7,7 +7,7 @@ void NDL_DirectMediaQuit() {}
 
 int NDL_DirectVideoSetArea(int x, int y, int w, int h) { return -1; }
 
-#if NDL_WEBOS5
+#if NDL_DIRECTMEDIA_API_VERSION >= 2
 int NDL_DirectMediaLoad(NDL_DIRECTMEDIA_DATA_INFO *info, NDLMediaLoadCallback callback) { return -1; }
 int NDL_DirectMediaUnload() { return -1; }
 
