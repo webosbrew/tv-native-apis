@@ -1,8 +1,8 @@
 #pragma once
-#include <lunaservice.h>
 
-typedef struct __HContext
-{
+#include <luna-service2/lunaservice.h>
+
+typedef struct __HContext {
     LSFilterFunc callback;
     int unknown1;
     int unknown2;
@@ -12,3 +12,5 @@ typedef struct __HContext
 } HContext;
 
 int HLunaServiceCall(const char *uri, const char *payload, HContext *context);
+
+const char *HLunaServiceMessage(LSMessage *msg);
