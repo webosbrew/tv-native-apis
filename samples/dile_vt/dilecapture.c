@@ -101,8 +101,11 @@ int main(int argc, char** argv) {
     output_state.enabled = 0;
     output_state.freezed = 0;
     output_state.appliedPQ = 0;
-    output_state.framerate = 1;
+    output_state.framerate = 1; // NOTE: This is in fact framerate divisor
     dump_state(&output_state);
+
+    // Second argument to SetVfodState is a flag indicating which part of the
+    // state to change.
     LOG(" -> SetVFODState(): %d", DILE_VT_SetVideoFrameOutputDeviceState(vth, 0x10, &output_state));
     LOG(" -> SetVFODState(): %d", DILE_VT_SetVideoFrameOutputDeviceState(vth, 0x02, &output_state));
 
