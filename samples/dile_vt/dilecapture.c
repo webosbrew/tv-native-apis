@@ -1,6 +1,7 @@
 #include <dile_vt.h>
 #include <stdio.h>
 #include <sys/mman.h>
+#include <sys/time.h>
 #include <fcntl.h>
 
 #include <jpeglib.h>
@@ -65,16 +66,21 @@ void write_JPEG_stdout(uint8_t* buffer, uint32_t width, uint32_t height, int qua
     }
 
     jpeg_finish_compress(&cinfo);
-
     printf("--myboundary\r\n");
     printf("Content-Type: image/jpeg\r\n");
     printf("Content-Length: %d\r\n\r\n", jpegSize);
     fwrite(jpegBuf, 1, jpegSize, stdout);
     printf("\r\n");
-
     jpeg_destroy_compress(&cinfo);
 
     free(jpegBuf);
+}
+
+double millis() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+
+    return (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 ;
 }
 
 int main(int argc, char** argv) {
@@ -86,15 +92,20 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    LOG(" -> SetVFODDumpLocation(): %d", DILE_VT_SetVideoFrameOutputDeviceDumpLocation(vth, CAPTURE_VT_SCALER_OUTPUT));
+    LOG(" -> SetVFODDumpLocation(): %d", DILE_VT_SetVideoFrameOutputDeviceDumpLocation(vth, CAPTURE_VT_DISPLAY_OUTPUT));
+
+    DILE_VT_REGION region = {0, 0, 2880/3/4, 560/4};
+    LOG(" -> SetVFODOutputRegion(): %d", DILE_VT_SetVideoFrameOutputDeviceOutputRegion(vth, CAPTURE_VT_DISPLAY_OUTPUT, &region));
 
     DILE_OUTPUTDEVICE_STATE output_state;
-    output_state.enabled = 1;
+    output_state.enabled = 0;
     output_state.freezed = 0;
     output_state.appliedPQ = 0;
-    output_state.framerate = 10;
+    output_state.framerate = 1;
     dump_state(&output_state);
-    LOG(" -> SetVFODState(): %d", DILE_VT_SetVideoFrameOutputDeviceState(vth, 2, &output_state));
+    LOG(" -> SetVFODState(): %d", DILE_VT_SetVideoFrameOutputDeviceState(vth, 0x10, &output_state));
+    LOG(" -> SetVFODState(): %d", DILE_VT_SetVideoFrameOutputDeviceState(vth, 0x02, &output_state));
+
     dump_state(&output_state);
 
     uint32_t idx = 0;
@@ -108,24 +119,36 @@ int main(int argc, char** argv) {
     dump_fvbprop(&vfbprop);
 
     int fd = 0;
-    uint32_t* memory = 0;
     fd = open("/dev/mem", O_RDWR|O_SYNC);
+    uint8_t* vfbs[16] = {0, 0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-    memory = (uint32_t *)mmap(0, vfbprop.stride * vfbprop.height, PROT_READ, MAP_SHARED, fd, ptrs[0]);
 
-    for (int i = 0; i < 64; i++) {
-        LOG("[%d]: %08x", i, memory[i]);
-    }
-
+    int frame = 0;
+    double start = millis();
     while (1) {
         /*
         FILE* pFile = fopen("/tmp/dump.bin","wb");
         fwrite(memory, vfbprop.stride * vfbprop.height, 1, pFile);
         fclose(pFile);
         */
-        write_JPEG_stdout(memory, vfbprop.stride / 3, vfbprop.height, 80);
-        LOG("DONE!");
-        usleep(50);
+
+        DILE_VT_WaitVsync(vth, 0, 0);
+
+        output_state.freezed = 1;
+        DILE_VT_SetVideoFrameOutputDeviceState(vth, 2, &output_state);
+
+        DILE_VT_GetCurrentVideoFrameBufferProperty(vth, &vfbprop, &idx);
+
+        if (vfbs[idx] == 0)
+            vfbs[idx] = (uint32_t *)mmap(0, vfbprop.stride * vfbprop.height, PROT_READ, MAP_SHARED, fd, ptrs[0]);
+
+        write_JPEG_stdout(vfbs[idx], vfbprop.stride/3, vfbprop.height, 80);
+        output_state.freezed = 0;
+        DILE_VT_SetVideoFrameOutputDeviceState(vth, 2, &output_state);
+        frame += 1;
+        if (frame % 30 == 0) {
+            LOG("DONE! %.5f", 1000 * frame / (millis() - start));
+        }
     }
 
     DILE_VT_Destroy(vth);
