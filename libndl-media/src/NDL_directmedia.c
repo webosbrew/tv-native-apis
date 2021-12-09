@@ -18,7 +18,11 @@ int NDL_DirectAudioSupportMultiChannel(int *value) { return -1; }
 
 int NDL_DirectVideoPlay(const void *data, size_t size, unsigned long long pts) { return -1; }
 int NDL_DirectVideoGetRenderBufferLength(int *length) { return -1; }
-int NDL_DirectVideoSetHDRInfo(NDL_DIRECTVIDEO_HDR_INFO info) { return -1; }
+int NDL_DirectVideoSetHDRInfo(int displayPrimariesX0, int displayPrimariesY0, int displayPrimariesX1,
+                              int displayPrimariesY1, int displayPrimariesX2, int displayPrimariesY2,
+                              int whitePointX, int whitePointY,
+                              int maxDisplayMasteringLuminance, int minDisplayMasteringLuminance,
+                              int maxContentLightLevel, int maxPicAverageLightLevel) { return -1; }
 int NDL_DirectVideoSetFrameDropThreshold(int threshold) { return -1; }
 #else
 int NDL_DirectAudioOpen(NDL_DIRECTAUDIO_DATA_INFO *info) { return -1; }
