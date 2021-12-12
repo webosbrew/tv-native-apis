@@ -1,0 +1,45 @@
+name: Build samples
+
+on:
+  push:
+
+jobs:
+  build-native-components:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Download webOS NDK
+      run: wget -q https://github.com/webosbrew/meta-lg-webos-ndk/releases/download/1.0.g-rev.4/webos-sdk-x86_64-armv7a-neon-toolchain-1.0.g.sh -P ${{github.workspace}}/temp
+
+    - name: Install webOS NDK
+      run: chmod 755 ${{github.workspace}}/temp/webos-sdk-x86_64-armv7a-neon-toolchain-1.0.g.sh && sudo ${{github.workspace}}/temp/webos-sdk-x86_64-armv7a-neon-toolchain-1.0.g.sh -y
+
+    - name: Initialize NDK Environments
+      run: env -i bash -c '. /opt/webos-sdk-x86_64/1.0.g/environment-setup-armv7a-neon-webos-linux-gnueabi && env' >> $GITHUB_ENV
+
+    - name: Create build directories
+      run: |
+        mkdir ${{github.workspace}}/build
+
+    - name: Build samples
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        cmake ..
+        make sample-dile-vt-capture
+        make sample-gm-capture
+        make sample-gmw-capture
+        make sample-halgal-capture
+        make sample-halgal-captureWithVideo
+        make sample-ndl-webos4
+        make sample-vt-capture
+        make sample-vtcapture-capture
+
+    - name: List files
+      run: find ${{github.workspace}}/build/
+
+    - name: Upload native components artifacts
+      run: echo TODO
