@@ -34,12 +34,22 @@ jobs:
         make sample-gmw-capture
         make sample-halgal-capture
         make sample-halgal-captureWithVideo
-        make sample-ndl-webos4
         make sample-vt-capture
-        make sample-vtcapture-capture
+
+        # NDL depends on having WebOS version defined @ build time
+        # make sample-ndl-webos4
+        # vtcapture is broken, uses OpenCV library atm
+        # make sample-vtcapture-capture
 
     - name: List files
       run: find ${{github.workspace}}/build/
 
-    - name: Upload native components artifacts
-      run: echo TODO
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: tv-native-apis-samples
+        path: |
+          ${{github.workspace}}/build/samples/halgal/capture/halgal-captureWithoutVideo
+          ${{github.workspace}}/build/samples/gm/capture/gm-capture
+          ${{github.workspace}}/build/samples/vt/capture/capture
+          ${{github.workspace}}/build/samples/gm-wayland/capture/gmw-capture
