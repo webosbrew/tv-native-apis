@@ -60,6 +60,23 @@ typedef struct DILE_VT_FRAMEBUFFER_CAPABILITY_T
     uint32_t numPlanes;
 } DILE_VT_FRAMEBUFFER_CAPABILITY;
 
+typedef struct DILE_VT_VIDEO_FRAME_OUTPUT_DEVICE_LIMITATION_T
+{
+    DILE_VT_RECT maxResolution;
+    uint8_t unk;
+    uint8_t supportInputVideoDeInterlacing;
+    uint8_t supportDisplayVideoDeInterlacing;
+    uint8_t supportScaleUp;
+    uint32_t scaleUpLimitWidth;
+    uint32_t scaleUpLimitHeight;
+    uint8_t supportScaleDown;
+    uint8_t unk2;
+    uint8_t unk3;
+    uint8_t unk4;
+    uint32_t scaleDownLimitWidth;
+    uint32_t scaleDownLimitHeight;
+} DILE_VT_VIDEO_FRAME_OUTPUT_DEVICE_LIMITATION;
+
 typedef enum DILE_VT_VIDEO_FRAME_OUTPUT_DEVICE_STATE_FLAGS_T
 {
     DILE_VT_VIDEO_FRAME_OUTPUT_DEVICE_STATE_NOFX = 0x00,
@@ -81,3 +98,4 @@ int DILE_VT_WaitVsync(DILE_VT_HANDLE, int unk1, int unk2);
 
 int DILE_VT_GetVideoFrameBufferCapability(DILE_VT_HANDLE, DILE_VT_FRAMEBUFFER_CAPABILITY*);
 int DILE_VT_GetAllVideoFrameBufferProperty(DILE_VT_HANDLE, DILE_VT_FRAMEBUFFER_CAPABILITY*, DILE_VT_FRAMEBUFFER_PROPERTY*);
+int DILE_VT_GetVideoFrameOutputDeviceLimitation(DILE_VT_HANDLE, DILE_VT_VIDEO_FRAME_OUTPUT_DEVICE_LIMITATION*);

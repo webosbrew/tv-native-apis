@@ -12,3 +12,4 @@ int DILE_VT_WaitVsync(DILE_VT_HANDLE handle, int unk1, int unk2) { return -1; }
 
 int DILE_VT_GetVideoFrameBufferCapability(DILE_VT_HANDLE handle, DILE_VT_FRAMEBUFFER_CAPABILITY* cap) { return -1; }
 int DILE_VT_GetAllVideoFrameBufferProperty(DILE_VT_HANDLE handle, DILE_VT_FRAMEBUFFER_CAPABILITY* cap, DILE_VT_FRAMEBUFFER_PROPERTY* vfbProp) { return -1; }
+int DILE_VT_GetVideoFrameOutputDeviceLimitation(DILE_VT_HANDLE vth, DILE_VT_VIDEO_FRAME_OUTPUT_DEVICE_LIMITATION* limitation) { return -1; }
