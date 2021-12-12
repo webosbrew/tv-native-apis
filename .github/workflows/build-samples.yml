@@ -49,6 +49,7 @@ jobs:
       with:
         name: tv-native-apis-samples
         path: |
+          ${{github.workspace}}/build/samples/halgal/capture/halgal-capture
           ${{github.workspace}}/build/samples/halgal/capture/halgal-captureWithoutVideo
           ${{github.workspace}}/build/samples/gm/capture/gm-capture
           ${{github.workspace}}/build/samples/vt/capture/capture
