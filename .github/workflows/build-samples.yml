@@ -17,6 +17,9 @@ jobs:
     - name: Install webOS NDK
       run: chmod 755 ${{github.workspace}}/temp/webos-sdk-x86_64-armv7a-neon-toolchain-1.0.g.sh && sudo ${{github.workspace}}/temp/webos-sdk-x86_64-armv7a-neon-toolchain-1.0.g.sh -y
 
+    - name: Download restore_path.sh script to use recent CMake
+      run: wget -q https://raw.githubusercontent.com/webosbrew/dev-goodies/main/restore-path.sh -P /opt/webos-sdk-x86_64/1.0.g/sysroots/x86_64-webossdk-linux/environment-setup.d
+
     - name: Initialize NDK Environments
       run: env -i bash -c '. /opt/webos-sdk-x86_64/1.0.g/environment-setup-armv7a-neon-webos-linux-gnueabi && env' >> $GITHUB_ENV
 
