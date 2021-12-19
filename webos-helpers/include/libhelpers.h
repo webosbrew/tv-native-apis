@@ -13,4 +13,6 @@ typedef struct __HContext {
 
 int HLunaServiceCall(const char *uri, const char *payload, HContext *context);
 
+int HUnregisterServiceCallback(HContext *context);
+
 const char *HLunaServiceMessage(LSMessage *msg);
