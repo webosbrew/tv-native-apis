@@ -144,6 +144,7 @@ int main(int argc, char *argv[])
 
     done = stop();
     return done;
+}
 
 int stop()
 {
@@ -160,6 +161,9 @@ int stop()
 
 int blend(unsigned char *result, unsigned char *fg, unsigned char *bg, int leng)
 {
+    unsigned int alpha,iAlpha;
+    int rIndex, gIndex, bIndex, aIndex;
+
     for (int i = 0; i < leng; i += 4){
         bIndex = i;
         gIndex = i + 1;
