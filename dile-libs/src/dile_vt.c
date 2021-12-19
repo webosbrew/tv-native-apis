@@ -2,6 +2,8 @@
 
 DILE_VT_HANDLE DILE_VT_Create(unsigned int videoWindowId) { return NULL; }
 DILE_VT_HANDLE DILE_VT_CreateEx(unsigned int videoWindowId, int bufferNum) { return NULL; }
+int DILE_VT_Start(DILE_VT_HANDLE handle) { return -1; }
+int DILE_VT_Stop(DILE_VT_HANDLE handle) { return -1; }
 int DILE_VT_GetVideoFrameOutputDeviceDumpLocation(DILE_VT_HANDLE handle, int *pDumpLocation) { return -1; }
 int DILE_VT_SetVideoFrameOutputDeviceDumpLocation(DILE_VT_HANDLE handle, int pDumpLocation) { return -1; }
 int DILE_VT_SetVideoFrameOutputDeviceState(DILE_VT_HANDLE handle, uint32_t stateFlags, DILE_OUTPUTDEVICE_STATE *state) { return -1; }
