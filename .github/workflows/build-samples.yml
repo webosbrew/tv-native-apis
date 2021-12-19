@@ -2,6 +2,7 @@ name: Build samples
 
 on:
   push:
+  pull_request:
 
 jobs:
   build-native-components:
