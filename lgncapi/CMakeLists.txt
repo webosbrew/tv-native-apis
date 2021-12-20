@@ -7,3 +7,7 @@ add_library(lgncopenapi SHARED
 )
 set_target_properties(lgncopenapi PROPERTIES SOVERSION 2)
 target_include_directories(lgncopenapi PUBLIC include)
+
+add_library(cgl SHARED src/cgl.c)
+set_target_properties(cgl PROPERTIES SOVERSION 2)
+target_include_directories(cgl PUBLIC include)
