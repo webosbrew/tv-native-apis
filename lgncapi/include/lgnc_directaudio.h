@@ -38,7 +38,7 @@ enum LGNC_ADEC_SAMPLING_FREQ_T
 
 typedef enum LGNC_ADEC_SAMPLING_FREQ_T LGNC_ADEC_SAMPLING_FREQ_T;
 
-static LGNC_ADEC_SAMPLING_FREQ_T LGNC_ADEC_SAMPLING_FREQ_OF(int hertz)
+static inline LGNC_ADEC_SAMPLING_FREQ_T LGNC_ADEC_SAMPLING_FREQ_OF(int hertz)
 {
     switch (hertz)
     {
@@ -81,4 +81,4 @@ typedef struct LGNC_ADEC_DATA_INFO_T LGNC_ADEC_DATA_INFO_T;
 int LGNC_DIRECTAUDIO_CheckBuffer();
 int LGNC_DIRECTAUDIO_Close();
 int LGNC_DIRECTAUDIO_Open(LGNC_ADEC_DATA_INFO_T *info);
-int LGNC_DIRECTAUDIO_Play(void *data, unsigned int size);
+int LGNC_DIRECTAUDIO_Play(const void *data, unsigned int size);
