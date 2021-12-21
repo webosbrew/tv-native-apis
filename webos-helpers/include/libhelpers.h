@@ -1,5 +1,5 @@
 /**
- * @defgroup helpers libhelpers
+ * @defgroup helpers helpers
  * @brief webOS common helper
  */
 
