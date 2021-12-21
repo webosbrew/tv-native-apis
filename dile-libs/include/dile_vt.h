@@ -88,6 +88,8 @@ typedef enum DILE_VT_VIDEO_FRAME_OUTPUT_DEVICE_STATE_FLAGS_T
 
 DILE_VT_HANDLE DILE_VT_Create(unsigned int videoWindowId);
 DILE_VT_HANDLE DILE_VT_CreateEx(unsigned int videoWindowId, int bufferNum);
+int DILE_VT_Start(DILE_VT_HANDLE);
+int DILE_VT_Stop(DILE_VT_HANDLE);
 int DILE_VT_GetVideoFrameOutputDeviceDumpLocation(DILE_VT_HANDLE, int *pDumpLocation);
 int DILE_VT_SetVideoFrameOutputDeviceDumpLocation(DILE_VT_HANDLE, int pDumpLocation);
 int DILE_VT_SetVideoFrameOutputDeviceState(DILE_VT_HANDLE, uint32_t stateFlags, DILE_OUTPUTDEVICE_STATE *state);

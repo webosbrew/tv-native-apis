@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
 
     LOG(" -> SetVFODDumpLocation(): %d", DILE_VT_SetVideoFrameOutputDeviceDumpLocation(vth, CAPTURE_VT_DISPLAY_OUTPUT));
 
-    DILE_VT_REGION region = {0, 0, 2880/3/4, 560/4};
+    DILE_VT_RECT region = {0, 0, 2880/3/4, 560/4};
     LOG(" -> SetVFODOutputRegion(): %d", DILE_VT_SetVideoFrameOutputDeviceOutputRegion(vth, CAPTURE_VT_DISPLAY_OUTPUT, &region));
 
     DILE_OUTPUTDEVICE_STATE output_state;
