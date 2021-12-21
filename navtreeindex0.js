@@ -2,9 +2,10 @@ var NAVTREEINDEX0 =
 {
 "annotated.html":[1,0],
 "classes.html":[1,1],
+"d0/d16/group__lgncapi.html":[0,0],
 "d2/ded/structCGL__AUDIO__INFO__T.html":[1,0,0],
 "d2/ded/structCGL__AUDIO__INFO__T.html#aded576c364be3d62b8203f0166285892":[1,0,0,0],
-"d7/d7a/group__cgl.html":[0,0],
+"d7/d7a/group__cgl.html":[0,0,0],
 "d9/d21/group__helpers.html":[0,1],
 "db/df9/structHContext.html":[1,0,1],
 "db/df9/structHContext.html#a71cb269c9c8cc77ca94097abf320b878":[1,0,1,1],
