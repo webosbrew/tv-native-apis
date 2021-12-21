@@ -1,9 +1,11 @@
 add_library(lgncopenapi SHARED
         src/lgnc_directaudio.c
         src/lgnc_directvideo.c
+        src/lgnc_dl.c
         src/lgnc_egl.c
         src/lgnc_gamepad.c
         src/lgnc_system.c
+        src/lgnc_plugin.c
         include/_doc_modules.h
         )
 set_target_properties(lgncopenapi PROPERTIES SOVERSION 2)
