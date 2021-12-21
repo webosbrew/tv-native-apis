@@ -1,4 +1,11 @@
+/**
+ * @ingroup cgl
+ * @file cgl_audio.h
+ * @brief Audio playback functions
+ */
 #pragma once
+
+#include <stddef.h>
 
 enum CGL_AUDIO_FMT_T {
     CGL_AUDIO_FMT_PCM = 1,
@@ -15,7 +22,10 @@ typedef enum CGL_AUDIO_CHANNEL_T {
     CGL_AUDIO_CH_INDEX_SUB = 1,
 } CGL_AUDIO_CHANNEL_T;
 
-enum CGL_AUDIO_SAMPLING_FREQ_T {
+/**
+ * @brief Sampling frequency enum definitions
+ */
+typedef enum CGL_AUDIO_SAMPLING_FREQ_T {
     CGL_AUDIO_SAMPLING_FREQ_NONE = 0,
     CGL_AUDIO_SAMPLING_FREQ_4KHZ = 1,
     CGL_AUDIO_SAMPLING_FREQ_8KHZ = 2,
@@ -27,10 +37,13 @@ enum CGL_AUDIO_SAMPLING_FREQ_T {
     CGL_AUDIO_SAMPLING_FREQ_32KHZ = 8,
     CGL_AUDIO_SAMPLING_FREQ_44KHZ = 9,
     CGL_AUDIO_SAMPLING_FREQ_48KHZ = 10,
-};
+} CGL_AUDIO_SAMPLING_FREQ_T;
 
-typedef enum CGL_AUDIO_SAMPLING_FREQ_T CGL_AUDIO_SAMPLING_FREQ_T;
-
+/**
+ * @brief Helper function to get enum for certain sampling frequency
+ * @param hertz Sampling frequency
+ * @return Sampling frequency enum value
+ */
 static inline CGL_AUDIO_SAMPLING_FREQ_T CGL_AUDIO_SAMPLING_FREQ_OF(int hertz) {
     switch (hertz) {
         case 4000:
@@ -58,16 +71,37 @@ static inline CGL_AUDIO_SAMPLING_FREQ_T CGL_AUDIO_SAMPLING_FREQ_OF(int hertz) {
     }
 }
 
+/**
+ * @brief Audio information
+ */
 typedef struct CGL_AUDIO_INFO_T {
     CGL_AUDIO_FMT_T codec;
+    /**
+     * @brief Usually set to CGL_AUDIO_CH_INDEX_MAIN
+     */
     CGL_AUDIO_CHANNEL_T channel;
     CGL_AUDIO_SAMPLING_FREQ_T samplingFreq;
     unsigned int numberOfChannel;
     unsigned int bitPerSample;
 } CGL_AUDIO_INFO_T;
 
-int CGL_CloseAudio();
-
+/**
+ * @brief Opens audio playback
+ * @param info Audio information
+ * @return 0 if succeeded
+ */
 int CGL_OpenAudio(const CGL_AUDIO_INFO_T *info);
 
-int CGL_PlayAudio(const void *data, unsigned int size);
+/**
+ * @brief Feed and play audio data
+ * @param data Audio stream buffer
+ * @param size Size of buffer
+ * @return 0 if succeeded
+ */
+int CGL_PlayAudio(const void *data, size_t size);
+
+/**
+ * @brief Closes audio playback
+ * @return 0 if succeeded
+ */
+int CGL_CloseAudio();

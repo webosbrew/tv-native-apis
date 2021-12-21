@@ -1,4 +1,12 @@
+/**
+ * @ingroup cgl
+ * @file cgl_video.h
+ * @brief Video playback functions
+ * @hidecallgraph
+ */
 #pragma once
+
+#include <stddef.h>
 
 typedef enum CGL_VIDEO_SOURCE_T {
     CGL_VIDEO_SOURCE_MAIN = 0,
@@ -19,8 +27,23 @@ typedef struct CGL_VIDEO_INFO_T {
     CGL_VIDEO_3D_TYPE_T tridType;
 } CGL_VIDEO_INFO_T;
 
+/**
+ * @brief Opens video playback
+ * @param info Pointer to video information
+ * @return 0 if succeeded
+ */
 int CGL_OpenVideo(const CGL_VIDEO_INFO_T *info);
 
-int CGL_PlayVideo(const void *data, unsigned int size);
+/**
+ * @brief Feed and play video data
+ * @param data Video stream buffer
+ * @param size Size of buffer
+ * @return 0 if succeeded
+ */
+int CGL_PlayVideo(const void *data, size_t size);
 
+/**
+ * @brief Closes video playback
+ * @return 0 if succeeded
+ */
 int CGL_CloseVideo();

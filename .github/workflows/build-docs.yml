@@ -1,0 +1,26 @@
+name: Build docs
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install required tools
+        run: sudo apt-get install -y cmake doxygen
+
+      - name: Create build directories
+        run: mkdir ${{github.workspace}}/build
+
+      - name: Build
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        # Execute the build.  You can specify a specific target with "--target <NAME>"
+        run: cmake --build . --target docs
