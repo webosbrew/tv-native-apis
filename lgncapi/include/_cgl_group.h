@@ -1,5 +1,5 @@
 /**
- * @defgroup cgl CGL
+ * @defgroup cgl libcgl
  * @brief Game and multimedia API
  *
  * CGL is native game and multimedia API for LG NetCast platform.
