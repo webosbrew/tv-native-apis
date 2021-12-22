@@ -1,4 +1,4 @@
-#include "lgnc_system.h"
+#include "lgnc.h"
 
 int LGNC_SYSTEM_Initialize(int argc, char **argv, LGNC_CALLBACKS_T *callbacks) { return 0; }
 
