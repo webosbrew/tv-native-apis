@@ -1,3 +1,8 @@
+/**
+ * @ingroup lgncopenapi
+ * @file lgnc_plugin.h
+ * @brief APIs for plugin-typed application
+ */
 #pragma once
 
 #include "lgnc_openapi_types.h"
