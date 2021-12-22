@@ -1,13 +1,7 @@
 #pragma once
+#include "lgnc_openapi_types.h"
 
-typedef struct LGNC_PLUGIN_INIT_PARAM_T {
-    int a;
-    int b;
-    int c;
-    int d;
-} LGNC_PLUGIN_INIT_PARAM_T;
-
-int LGNC_PLUGIN_Initialize(LGNC_PLUGIN_INIT_PARAM_T *param);
+int LGNC_PLUGIN_Initialize(LGNC_CALLBACKS_T *callbacks);
 
 int LGNC_PLUGIN_SetAppId(const char *appId);
 
