@@ -3,7 +3,7 @@ var indexSectionsWithContent =
   0: "chlmp",
   1: "ch",
   2: "cl",
-  3: "ch",
+  3: "chl",
   4: "cmp",
   5: "ch",
   6: "c",

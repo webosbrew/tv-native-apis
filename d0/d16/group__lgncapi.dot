@@ -5,5 +5,7 @@ digraph "lgncapi"
   rankdir=LR;
   Node1 [label="lgncapi",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="LGNC Open API for legacy platforms."];
   Node2 [label="cgl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d7a/group__cgl.html",tooltip="Game and multimedia API."];
+  Node3 [label="lgncopenapi",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d60/group__lgncopenapi.html",tooltip="LGNC Open API for legacy platforms."];
   Node1->Node2 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
 }

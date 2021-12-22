@@ -8,5 +8,5 @@ digraph "lgncapi" {
     dir_bd55be3e7513708b4fd19e210b40e663 [shape=box label="include" color="black" fillcolor="white" style="filled" URL="dir_bd55be3e7513708b4fd19e210b40e663.html"];
     dir_a52b94bb14d193f472647ef9d5714f89 [shape=box label="src" color="black" fillcolor="white" style="filled" URL="dir_a52b94bb14d193f472647ef9d5714f89.html"];
   }
-  dir_a52b94bb14d193f472647ef9d5714f89->dir_bd55be3e7513708b4fd19e210b40e663 [headlabel="1", labeldistance=1.5 headhref="dir_000002_000001.html"];
+  dir_a52b94bb14d193f472647ef9d5714f89->dir_bd55be3e7513708b4fd19e210b40e663 [headlabel="3", labeldistance=1.5 headhref="dir_000002_000001.html"];
 }
