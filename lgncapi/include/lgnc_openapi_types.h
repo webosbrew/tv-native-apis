@@ -1,7 +1,7 @@
 #pragma once
 
-enum LGNC_STATUS_T
-{
+
+typedef enum LGNC_STATUS_T {
     LGNC_OK = 0,
     LGNC_HANDLED = 0,
     LGNC_NOT_HANDLED = -1,
@@ -17,7 +17,4 @@ enum LGNC_STATUS_T
     LGNC_ALREADY_REGISTERED = -10,
     LGNC_LAST = -10,
     LGNC_NOT_INITIALIZED = -11,
-};
-
-
-typedef enum LGNC_STATUS_T LGNC_STATUS_T;
+} LGNC_STATUS_T;

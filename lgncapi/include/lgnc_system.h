@@ -5,30 +5,31 @@
 
 #include "lgnc_openapi_types.h"
 
-#define LGNC_REMOTE_PRESS 272
-#define LGNC_REMOTE_RED 398
-#define LGNC_REMOTE_GREEN 399
-#define LGNC_REMOTE_YELLOW 400
-#define LGNC_REMOTE_BLUE 401
-#define LGNC_REMOTE_CH_UP 402
-#define LGNC_REMOTE_CH_DOWN 403
-#define LGNC_REMOTE_BACK 412
-#define LGNC_REMOTE_NUM_1 872
-#define LGNC_REMOTE_NUM_2 873
-#define LGNC_REMOTE_NUM_3 874
-#define LGNC_REMOTE_NUM_4 875
-#define LGNC_REMOTE_NUM_5 876
-#define LGNC_REMOTE_NUM_6 877
-#define LGNC_REMOTE_NUM_7 878
-#define LGNC_REMOTE_NUM_8 879
-#define LGNC_REMOTE_NUM_9 880
-#define LGNC_REMOTE_NUM_10 881
-#define LGNC_REMOTE_NUM_11 882
-#define LGNC_REMOTE_NUM_12 883
-#define LGNC_REMOTE_DATA_HOSO 885
+enum {
+    LGNC_REMOTE_PRESS = 272,
+    LGNC_REMOTE_RED = 398,
+    LGNC_REMOTE_GREEN = 399,
+    LGNC_REMOTE_YELLOW = 400,
+    LGNC_REMOTE_BLUE = 401,
+    LGNC_REMOTE_CH_UP = 402,
+    LGNC_REMOTE_CH_DOWN = 403,
+    LGNC_REMOTE_BACK = 412,
+    LGNC_REMOTE_NUM_1 = 872,
+    LGNC_REMOTE_NUM_2 = 873,
+    LGNC_REMOTE_NUM_3 = 874,
+    LGNC_REMOTE_NUM_4 = 875,
+    LGNC_REMOTE_NUM_5 = 876,
+    LGNC_REMOTE_NUM_6 = 877,
+    LGNC_REMOTE_NUM_7 = 878,
+    LGNC_REMOTE_NUM_8 = 879,
+    LGNC_REMOTE_NUM_9 = 880,
+    LGNC_REMOTE_NUM_10 = 881,
+    LGNC_REMOTE_NUM_11 = 882,
+    LGNC_REMOTE_NUM_12 = 883,
+    LGNC_REMOTE_DATA_HOSO = 885,
+};
 
-enum LGNC_KEY_COND_T
-{
+enum LGNC_KEY_COND_T {
     LGNC_KEY_PRESS = 0,
     LGNC_KEY_RELEASE = 1,
     LGNC_KEY_REPEAT = 2,
@@ -40,8 +41,7 @@ enum LGNC_KEY_COND_T
 
 typedef enum LGNC_KEY_COND_T LGNC_KEY_COND_T;
 
-enum LGNC_MSG_TYPE_T
-{
+enum LGNC_MSG_TYPE_T {
     LGNC_MSG_NONE = 0,
     LGNC_MSG_FOCUS_IN = 1,
     LGNC_MSG_FOCUS_OUT = 2,
@@ -54,8 +54,7 @@ enum LGNC_MSG_TYPE_T
 
 typedef enum LGNC_MSG_TYPE_T LGNC_MSG_TYPE_T;
 
-enum LGNC_CURSOR_SIZE_T
-{
+enum LGNC_CURSOR_SIZE_T {
     LGNC_CURSOR_SIZE_L = 0,
     LGNC_CURSOR_SIZE_M = 1,
     LGNC_CURSOR_SIZE_S = 2,
@@ -65,8 +64,7 @@ enum LGNC_CURSOR_SIZE_T
 
 typedef enum LGNC_CURSOR_SIZE_T LGNC_CURSOR_SIZE_T;
 
-enum LGNC_CURSOR_TYPE_T
-{
+enum LGNC_CURSOR_TYPE_T {
     LGNC_CURSOR_TYPE_A = 0,
     LGNC_CURSOR_TYPE_B = 1,
     LGNC_CURSOR_TYPE_C = 2,
@@ -86,23 +84,20 @@ enum LGNC_CURSOR_TYPE_T
     LGNC_CURSOR_TYPE_LAST = 16
 };
 
-enum LGNC_CURSOR_STATE_T
-{
+enum LGNC_CURSOR_STATE_T {
     LGNC_CURSOR_STATE_NORMAL = 0,
     LGNC_CURSOR_STATE_PRESS = 1,
     LGNC_CURSOR_STATE_LASTEST = 2,
     LGNC_CURSOR_STATE_LAST = 3,
 };
 
-enum LGNC_CURSOR_HOTSPOT_T
-{
+enum LGNC_CURSOR_HOTSPOT_T {
     LGNC_CURSOR_HOTSPOT_LEFTTOP = 0,
     LGNC_CURSOR_HOTSPOT_USERSETTING = 1,
     LGNC_CURSOR_HOTSPOT_LAST = 2,
 };
 
-enum LGNC_INPUT_DEV_TYPE_T
-{
+enum LGNC_INPUT_DEV_TYPE_T {
     LGNC_INPUT_TYPE_KEYBOARD = 1,
     LGNC_INPUT_TYPE_MOUSE = 2,
     LGNC_INPUT_TYPE_JOYSTICK = 4,
@@ -123,27 +118,27 @@ enum LGNC_INPUT_DEV_TYPE_T
 
 typedef enum LGNC_INPUT_DEV_TYPE_T LGNC_INPUT_DEV_TYPE_T;
 
-struct LGNC_ADDITIONAL_INPUT_INFO_T
-{
+struct LGNC_ADDITIONAL_INPUT_INFO_T {
     struct input_event event;
     int deviceID;
     LGNC_INPUT_DEV_TYPE_T deviceType;
 };
 typedef struct LGNC_ADDITIONAL_INPUT_INFO_T LGNC_ADDITIONAL_INPUT_INFO_T;
 
-struct LGNC_SYSTEM_CALLBACKS_T
-{
-    LGNC_STATUS_T(*pfnMsgHandler)
-    (LGNC_MSG_TYPE_T msg, unsigned int submsg, char *pData, unsigned short dataSize);
-    unsigned int (*pfnKeyEventCallback)(unsigned int key, LGNC_KEY_COND_T keyCond, LGNC_ADDITIONAL_INPUT_INFO_T *keyInput);
-    unsigned int (*pfnMouseEventCallback)(int posX, int posY, unsigned int key, LGNC_KEY_COND_T keyCond, LGNC_ADDITIONAL_INPUT_INFO_T *keyInput);
-    void (*pfnJoystickEventCallback)(LGNC_ADDITIONAL_INPUT_INFO_T *e);
-};
+typedef struct LGNC_SYSTEM_CALLBACKS_T {
+    LGNC_STATUS_T (*msgHandler)(LGNC_MSG_TYPE_T msg, unsigned int submsg, char *pData, unsigned short dataSize);
+
+    unsigned int (*keyEventCallback)(unsigned int key, LGNC_KEY_COND_T keyCond, LGNC_ADDITIONAL_INPUT_INFO_T *keyInput);
+
+    unsigned int (*mouseEventCallback)(int posX, int posY, unsigned int key, LGNC_KEY_COND_T keyCond,
+                                       LGNC_ADDITIONAL_INPUT_INFO_T *keyInput);
+
+    void (*joystickEventCallback)(LGNC_ADDITIONAL_INPUT_INFO_T *e);
+} LGNC_SYSTEM_CALLBACKS_T;
 
 typedef struct LGNC_CTRL_INFO LGNC_CTRL_INFO, *PLGNC_CTRL_INFO;
 
-struct LGNC_CTRL_INFO
-{
+struct LGNC_CTRL_INFO {
     char projectName[32];
     char modelName[32];
     char hwVer[32];
@@ -166,10 +161,7 @@ typedef enum LGNC_CURSOR_STATE_T LGNC_CURSOR_STATE_T;
 
 typedef enum LGNC_CURSOR_TYPE_T LGNC_CURSOR_TYPE_T;
 
-typedef struct LGNC_CUSTOM_CURSOR LGNC_CUSTOM_CURSOR, *PLGNC_CUSTOM_CURSOR;
-
-struct LGNC_CUSTOM_CURSOR
-{
+typedef struct LGNC_CUSTOM_CURSOR {
     char fileInfo[256];
     LGNC_CURSOR_TYPE_T cursorType;
     LGNC_CURSOR_SIZE_T cursorSize;
@@ -177,18 +169,20 @@ struct LGNC_CUSTOM_CURSOR
     LGNC_CURSOR_HOTSPOT_T cursorHotSpot;
     unsigned short gapX;
     unsigned short gapY;
-};
-
-typedef struct LGNC_CUSTOM_CURSOR LGNC_CUSTOM_CURSOR_T;
-
-typedef struct LGNC_SYSTEM_CALLBACKS_T LGNC_SYSTEM_CALLBACKS_T;
+} LGNC_CUSTOM_CURSOR_T;
 
 int LGNC_SYSTEM_Initialize(int argc, char **argv, LGNC_SYSTEM_CALLBACKS_T *callbacks);
+
 int LGNC_SYSTEM_Finalize(void);
 
 int LGNC_SYSTEM_GetDisplayId(int *displayId /* very likely to be wl_egl_window */);
+
 int LGNC_SYSTEM_GetLanguage(void);
+
 int LGNC_SYSTEM_GetSaveDirectory(void);
+
 int LGNC_SYSTEM_GetSystemInfo(void);
+
 int LGNC_SYSTEM_SetCursorShape(void);
+
 int LGNC_SYSTEM_SetCustomCursor(void);
