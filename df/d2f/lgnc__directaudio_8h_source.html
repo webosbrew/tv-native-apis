@@ -112,73 +112,72 @@ $(document).ready(function(){initNavTree('df/d2f/lgnc__directaudio_8h_source.htm
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">enum</span> LGNC_ADEC_CH_INDEX_T</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    LGNC_ADEC_CH_INDEX_MAIN = 0,</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    LGNC_ADEC_CH_INDEX_BUF0 = 1,</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    LGNC_ADEC_CH_INDEX_MAX = 2</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;};</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> LGNC_ADEC_CH_INDEX_T LGNC_ADEC_CH_INDEX_T;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">enum</span> LGNC_ADEC_SAMPLING_FREQ_T</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_4_KHZ = 4,</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_8_KHZ = 8,</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_11_025KHZ = 11,</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_12_KHZ = 12,</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_16_KHZ = 16,</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_22_05KHZ = 22,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_24_KHZ = 24,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_32_KHZ = 32,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_44_1KHZ = 44,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_48_KHZ = 48,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_NONE = 0,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;};</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> LGNC_ADEC_SAMPLING_FREQ_T LGNC_ADEC_SAMPLING_FREQ_T;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">static</span> <span class="keyword">inline</span> LGNC_ADEC_SAMPLING_FREQ_T LGNC_ADEC_SAMPLING_FREQ_OF(<span class="keywordtype">int</span> hertz)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">switch</span> (hertz)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">case</span> 4000:</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_4_KHZ;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">case</span> 8000:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_8_KHZ;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">case</span> 11025:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_11_025KHZ;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">case</span> 12000:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_12_KHZ;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">case</span> 16000:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_16_KHZ;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">case</span> 22050:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_22_05KHZ;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">case</span> 24000:</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_24_KHZ;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">case</span> 32000:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_32_KHZ;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">case</span> 44100:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_44_1KHZ;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">case</span> 48000:</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_48_KHZ;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_NONE;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">struct </span>LGNC_ADEC_DATA_INFO_T</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;{</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    LGNC_ADEC_FMT_T codec;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    LGNC_ADEC_CH_INDEX_T AChannel;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_T samplingFreq;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfChannel;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bitPerSample;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>LGNC_ADEC_DATA_INFO_T LGNC_ADEC_DATA_INFO_T;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">int</span> LGNC_DIRECTAUDIO_CheckBuffer();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keywordtype">int</span> LGNC_DIRECTAUDIO_Close();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">int</span> LGNC_DIRECTAUDIO_Open(LGNC_ADEC_DATA_INFO_T *info);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keywordtype">int</span> LGNC_DIRECTAUDIO_Play(<span class="keyword">const</span> <span class="keywordtype">void</span> *data, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    LGNC_ADEC_CH_INDEX_BUF0 = 1</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;};</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> LGNC_ADEC_CH_INDEX_T LGNC_ADEC_CH_INDEX_T;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">enum</span> LGNC_ADEC_SAMPLING_FREQ_T</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_4_KHZ = 4,</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_8_KHZ = 8,</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_11_025KHZ = 11,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_12_KHZ = 12,</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_16_KHZ = 16,</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_22_05KHZ = 22,</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_24_KHZ = 24,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_32_KHZ = 32,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_44_1KHZ = 44,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_48_KHZ = 48,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_NONE = 0,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;};</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> LGNC_ADEC_SAMPLING_FREQ_T LGNC_ADEC_SAMPLING_FREQ_T;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">static</span> <span class="keyword">inline</span> LGNC_ADEC_SAMPLING_FREQ_T LGNC_ADEC_SAMPLING_FREQ_OF(<span class="keywordtype">int</span> hertz)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">switch</span> (hertz)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">case</span> 4000:</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_4_KHZ;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">case</span> 8000:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_8_KHZ;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">case</span> 11025:</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_11_025KHZ;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">case</span> 12000:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_12_KHZ;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">case</span> 16000:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_16_KHZ;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">case</span> 22050:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_22_05KHZ;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">case</span> 24000:</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_24_KHZ;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">case</span> 32000:</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_32_KHZ;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">case</span> 44100:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_44_1KHZ;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">case</span> 48000:</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_48_KHZ;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">return</span> LGNC_ADEC_SAMPLING_FREQ_NONE;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">struct </span>LGNC_ADEC_DATA_INFO_T</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    LGNC_ADEC_FMT_T codec;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    LGNC_ADEC_CH_INDEX_T AChannel;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    LGNC_ADEC_SAMPLING_FREQ_T samplingFreq;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfChannel;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bitPerSample;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;};</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>LGNC_ADEC_DATA_INFO_T LGNC_ADEC_DATA_INFO_T;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keywordtype">int</span> LGNC_DIRECTAUDIO_CheckBuffer(<span class="keywordtype">int</span> *length);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">int</span> LGNC_DIRECTAUDIO_Close();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keywordtype">int</span> LGNC_DIRECTAUDIO_Open(LGNC_ADEC_DATA_INFO_T *info);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">int</span> LGNC_DIRECTAUDIO_Play(<span class="keyword">const</span> <span class="keywordtype">void</span> *data, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size);</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
