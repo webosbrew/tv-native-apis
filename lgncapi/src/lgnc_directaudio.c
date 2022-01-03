@@ -1,6 +1,6 @@
 #include "lgnc_directaudio.h"
 
-int LGNC_DIRECTAUDIO_CheckBuffer() { return 0; }
+int LGNC_DIRECTAUDIO_CheckBuffer(int *length) { return 0; }
 
 int LGNC_DIRECTAUDIO_Close() { return 0; }
 
