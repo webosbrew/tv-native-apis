@@ -15,8 +15,7 @@ typedef enum LGNC_ADEC_FMT_T LGNC_ADEC_FMT_T;
 enum LGNC_ADEC_CH_INDEX_T
 {
     LGNC_ADEC_CH_INDEX_MAIN = 0,
-    LGNC_ADEC_CH_INDEX_BUF0 = 1,
-    LGNC_ADEC_CH_INDEX_MAX = 2
+    LGNC_ADEC_CH_INDEX_BUF0 = 1
 };
 
 typedef enum LGNC_ADEC_CH_INDEX_T LGNC_ADEC_CH_INDEX_T;
@@ -78,7 +77,7 @@ struct LGNC_ADEC_DATA_INFO_T
 
 typedef struct LGNC_ADEC_DATA_INFO_T LGNC_ADEC_DATA_INFO_T;
 
-int LGNC_DIRECTAUDIO_CheckBuffer();
+int LGNC_DIRECTAUDIO_CheckBuffer(int *length);
 int LGNC_DIRECTAUDIO_Close();
 int LGNC_DIRECTAUDIO_Open(LGNC_ADEC_DATA_INFO_T *info);
 int LGNC_DIRECTAUDIO_Play(const void *data, unsigned int size);
