@@ -69,7 +69,7 @@ static GstFlowReturn videoNewPreroll(GstAppSink *appsink, gpointer user_data)
 
     gst_sample_unref(preroll);
 
-    if (callbacks->videoPreroll(width, height, 0) == -1)
+    if (callbacks->videoPreroll(width, height, 0) != 0)
     {
         return GST_FLOW_ERROR;
     }
