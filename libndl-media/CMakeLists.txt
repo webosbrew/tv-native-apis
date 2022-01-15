@@ -1,9 +1,3 @@
 add_library(NDL_directmedia SHARED src/NDL_directmedia.c)
 set_target_properties(NDL_directmedia PROPERTIES SOVERSION 1)
 target_include_directories(NDL_directmedia PUBLIC include)
-target_compile_definitions(NDL_directmedia PRIVATE WEBOS_TARGET_VERSION_MAJOR=4)
-
-add_library(NDL_directmedia_es SHARED src/NDL_directmedia.c)
-set_target_properties(NDL_directmedia_es PROPERTIES OUTPUT_NAME "NDL_directmedia" SOVERSION 1)
-target_include_directories(NDL_directmedia_es PUBLIC include)
-target_compile_definitions(NDL_directmedia_es PRIVATE WEBOS_TARGET_VERSION_MAJOR=5)

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "_NDL_directmedia_types.h"
+#include <stddef.h>
 
-#define NDL_DIRECTMEDIA_API_VERSION 2
+#include "NDL_directmedia_common.h"
+
 
 typedef void (*NDLMediaLoadCallback)(int, long long, const char *);
 
@@ -82,11 +83,6 @@ int NDL_DirectMediaLoad(NDL_DIRECTMEDIA_DATA_INFO *info, NDLMediaLoadCallback ca
 
 int NDL_DirectMediaUnload();
 
-/**
- * @param pts for webOS 5 only
- * @return 0 if succeeded
- */
-int NDL_DirectAudioPlay(const void *data, size_t size, unsigned long long pts);
 
 int NDL_DirectAudioGetAvailableBufferSize(int *available);
 
@@ -94,11 +90,6 @@ int NDL_DirectAudioGetTotalBufferSize(int *total);
 
 int NDL_DirectAudioSupportMultiChannel(int *value);
 
-/**
- * @param pts for webOS 5 only
- * @return 0 if succeeded
- */
-int NDL_DirectVideoPlay(const void *data, size_t size, unsigned long long pts);
 
 int NDL_DirectVideoGetRenderBufferLength(int *length);
 
