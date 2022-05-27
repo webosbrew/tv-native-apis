@@ -4,13 +4,13 @@
 #include "types.h"
 #include "shim.h"
 
-CURL *curl_easy_init(void) {
-    CURL_SHIM_FN("curl_easy_init", fn, CURL*, void);
+CURL_EXTERN CURL *curl_easy_init(void) {
+    CURL_SHIM_FN(CURL*, void);
     return fn();
 }
 
-CURLcode curl_easy_setopt(CURL *curl, CURLoption option, ...) {
-    CURL_SHIM_FN("curl_easy_setopt", fn, CURLcode, CURL *curl, CURLoption option, ...);
+CURL_EXTERN CURLcode curl_easy_setopt(CURL *curl, CURLoption option, ...) {
+    CURL_SHIM_FN(CURLcode, CURL *curl, CURLoption option, ...);
 
     CURLcode ret;
     va_list args;
@@ -33,18 +33,18 @@ CURLcode curl_easy_setopt(CURL *curl, CURLoption option, ...) {
     return ret;
 }
 
-CURLcode curl_easy_perform(CURL *curl) {
-    CURL_SHIM_FN("curl_easy_perform", fn, CURLcode, CURL *curl);
+CURL_EXTERN CURLcode curl_easy_perform(CURL *curl) {
+    CURL_SHIM_FN(CURLcode, CURL *curl);
     return fn(curl);
 }
 
-void curl_easy_cleanup(CURL *curl) {
-    CURL_SHIM_FN("curl_easy_cleanup", fn, void, CURL *curl);
+CURL_EXTERN void curl_easy_cleanup(CURL *curl) {
+    CURL_SHIM_FN(void, CURL *curl);
     fn(curl);
 }
 
-CURLcode curl_easy_getinfo(CURL *curl, CURLINFO info, ...) {
-    CURL_SHIM_FN("curl_easy_getinfo", fn, CURLcode, CURL *curl, CURLINFO option, ...);
+CURL_EXTERN CURLcode curl_easy_getinfo(CURL *curl, CURLINFO info, ...) {
+    CURL_SHIM_FN(CURLcode, CURL *curl, CURLINFO option, ...);
 
     CURLcode ret;
     va_list args;
@@ -64,15 +64,15 @@ CURLcode curl_easy_getinfo(CURL *curl, CURLINFO info, ...) {
     return ret;
 }
 
-CURL *curl_easy_duphandle(CURL *curl);
+CURL_EXTERN CURL *curl_easy_duphandle(CURL *curl);
 
-void curl_easy_reset(CURL *curl);
+CURL_EXTERN void curl_easy_reset(CURL *curl);
 
-CURLcode curl_easy_recv(CURL *curl, void *buffer, size_t buflen, size_t *n);
+CURL_EXTERN CURLcode curl_easy_recv(CURL *curl, void *buffer, size_t buflen, size_t *n);
 
-CURLcode curl_easy_send(CURL *curl, const void *buffer, size_t buflen, size_t *n);
+CURL_EXTERN CURLcode curl_easy_send(CURL *curl, const void *buffer, size_t buflen, size_t *n);
 
-const char *curl_easy_strerror(CURLcode code) {
-    CURL_SHIM_FN("curl_easy_perform", fn, const char*, CURLcode);
+CURL_EXTERN const char *curl_easy_strerror(CURLcode code) {
+    CURL_SHIM_FN(const char*, CURLcode);
     return fn(code);
 }

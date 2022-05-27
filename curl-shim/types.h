@@ -21,3 +21,5 @@ typedef enum {
 #define CURLINFO_SOCKET   0x500000
 #define CURLINFO_MASK     0x0fffff
 #define CURLINFO_TYPEMASK 0xf00000
+
+#define CURL_EXTERN __attribute__((unused))
