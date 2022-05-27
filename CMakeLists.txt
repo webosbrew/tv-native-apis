@@ -15,6 +15,7 @@ add_subdirectory(libvtcapture)
 add_subdirectory(libgm-wayland)
 add_subdirectory(libhalgal)
 add_subdirectory(lgncapi)
+add_subdirectory(curl-shim)
 
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     add_subdirectory(samples)
