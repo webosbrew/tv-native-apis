@@ -91,6 +91,9 @@ static GstFlowReturn videoNewSample(GstAppSink *appsink, gpointer user_data)
         gst_sample_unref(sample);
         return GST_FLOW_ERROR;
     }
+
+    gst_buffer_unmap(buf, &info);
+    gst_sample_unref(sample);
     return GST_FLOW_OK;
 }
 
