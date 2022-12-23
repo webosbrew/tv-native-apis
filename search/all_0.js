@@ -6,7 +6,7 @@ var searchData=
   ['cgl_5faudio_2eh_3',['cgl_audio.h',['../d9/ded/cgl__audio_8h.html',1,'']]],
   ['cgl_5faudio_5finfo_5ft_4',['CGL_AUDIO_INFO_T',['../d2/ded/structCGL__AUDIO__INFO__T.html',1,'CGL_AUDIO_INFO_T'],['../d9/ded/cgl__audio_8h.html#a7f302b43369e47e27f18fd5bad2f3da8',1,'CGL_AUDIO_INFO_T():&#160;cgl_audio.h']]],
   ['cgl_5faudio_5fsampling_5ffreq_5fof_5',['CGL_AUDIO_SAMPLING_FREQ_OF',['../d9/ded/cgl__audio_8h.html#a156fc047f771d4c23676e39ef66469d9',1,'cgl_audio.h']]],
-  ['cgl_5faudio_5fsampling_5ffreq_5ft_6',['CGL_AUDIO_SAMPLING_FREQ_T',['../d9/ded/cgl__audio_8h.html#af69f0f190602bceccbe130e5dd85c9e6',1,'CGL_AUDIO_SAMPLING_FREQ_T():&#160;cgl_audio.h'],['../d9/ded/cgl__audio_8h.html#aa33ca62b3fab951f590c12b018c8de42',1,'CGL_AUDIO_SAMPLING_FREQ_T():&#160;cgl_audio.h']]],
+  ['cgl_5faudio_5fsampling_5ffreq_5ft_6',['CGL_AUDIO_SAMPLING_FREQ_T',['../d9/ded/cgl__audio_8h.html#aa33ca62b3fab951f590c12b018c8de42',1,'CGL_AUDIO_SAMPLING_FREQ_T():&#160;cgl_audio.h'],['../d9/ded/cgl__audio_8h.html#af69f0f190602bceccbe130e5dd85c9e6',1,'CGL_AUDIO_SAMPLING_FREQ_T():&#160;cgl_audio.h']]],
   ['cgl_5fcloseaudio_7',['CGL_CloseAudio',['../d9/ded/cgl__audio_8h.html#a7fdd1302eb0aff126db385361d8a5b27',1,'cgl.c']]],
   ['cgl_5fclosevideo_8',['CGL_CloseVideo',['../d6/df4/cgl__video_8h.html#af1987b0e8c924c75e8c08d95e99cff4f',1,'cgl.c']]],
   ['cgl_5ffinalize_9',['CGL_Finalize',['../de/dba/cgl__system_8h.html#ac8d3b158cfe202a4e03f39b1eb848ee8',1,'cgl.c']]],

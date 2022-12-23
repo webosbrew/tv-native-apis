@@ -5,8 +5,8 @@ digraph "webos-helpers" {
   subgraph clusterdir_624cde8a026d8ecb0eaa310e86518d3e {
     graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_624cde8a026d8ecb0eaa310e86518d3e.html"];
     dir_624cde8a026d8ecb0eaa310e86518d3e [shape=plaintext label="webos-helpers"];
-    dir_e5683ddce984525fc276611c31a3a06d [shape=box label="include" color="black" fillcolor="white" style="filled" URL="dir_e5683ddce984525fc276611c31a3a06d.html"];
-    dir_e2dc5e2f55fd8c16ce4c2cf5c2c0ec15 [shape=box label="src" color="black" fillcolor="white" style="filled" URL="dir_e2dc5e2f55fd8c16ce4c2cf5c2c0ec15.html"];
+  dir_e5683ddce984525fc276611c31a3a06d [shape=box label="include" fillcolor="white" style="filled" URL="dir_e5683ddce984525fc276611c31a3a06d.html"];
+  dir_e2dc5e2f55fd8c16ce4c2cf5c2c0ec15 [shape=box label="src" fillcolor="white" style="filled" URL="dir_e2dc5e2f55fd8c16ce4c2cf5c2c0ec15.html"];
   }
   dir_e2dc5e2f55fd8c16ce4c2cf5c2c0ec15->dir_e5683ddce984525fc276611c31a3a06d [headlabel="1", labeldistance=1.5 headhref="dir_000008_000007.html"];
 }
