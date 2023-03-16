@@ -15,6 +15,10 @@ public:
     const char *getMediaID();
     const char *getVolume();
     bool Load(const char *payload, void(callback)(int type, int64_t numValue, const char *strValue));
+
+    /**
+     * @since webOS 2.0
+     */
     bool Load(const char *payload, void(callback)(int type, int64_t numValue, const char *strValue, void *data), void *data);
     bool notifyBackground();
     bool notifyForeground();
