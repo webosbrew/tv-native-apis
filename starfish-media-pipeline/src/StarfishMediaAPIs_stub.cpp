@@ -17,7 +17,7 @@ std::string StarfishMediaAPIs::Feed(const char *payload)
 // Symbol for legacy API
 extern "C" void* _ZN17StarfishMediaAPIs4FeedEPKc(const char *payload)
 {
-
+    return nullptr;
 }
 
 uint StarfishMediaAPIs::flush()
