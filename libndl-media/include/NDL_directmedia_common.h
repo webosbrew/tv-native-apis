@@ -1,55 +1,47 @@
 #pragma once
 
-#include <stddef.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-enum NDL_DIRECTMEDIA_APP_STATE_ {
-    NDL_DIRECTMEDIA_APP_STATE_FOREGROUND,
-    NDL_DIRECTMEDIA_APP_STATE_BACKGROUND,
-};
-typedef enum NDL_DIRECTMEDIA_APP_STATE_ NDL_DIRECTMEDIA_APP_STATE_T;
+/* default to API version 1 (pre-webOS 5) */
+#ifndef NDL_DIRECTMEDIA_API_VERSION
+# define NDL_DIRECTMEDIA_API_VERSION 1
+#endif
 
-typedef void (*NDLInitCallback)(char *type);
+#include "NDL_directmedia_types.h"
 
+/**
+ * Get last error message
+ *
+ * @return Last error message
+ */
+const char *NDL_DirectMediaGetError(void);
 
 /**
  * Initialize NDL library
  * @param appId Application ID
- * @return 0 if succeeded
+ * @return 0 on success, -1 on failure
  */
-int NDL_DirectMediaInit(const char *appid, NDLInitCallback cb);
+int NDL_DirectMediaInit(const char *app_id, ResourceReleased cb);
 
 /**
  * De-initialize NDL library
- */
-void NDL_DirectMediaQuit();
-
-/**
- * Get last error message
- * @return
- */
-const char *NDL_DirectMediaGetError();
-
-int NDL_DirectMediaSetAppState(NDL_DIRECTMEDIA_APP_STATE_T state);
-
-
-int NDL_DirectVideoSetArea(int x, int y, int w, int h);
-
-/**
- * Play audio stream
  *
- * @param data Data buffer
- * @param size Buffer size
- * @param pts Ignored under webOS 5
- * @return 0 if succeeded
+ * @return 0 on success, -1 on failure
  */
-int NDL_DirectVideoPlay(const void *data, size_t size, unsigned long long pts);
+int NDL_DirectMediaQuit(void);
 
 /**
- * Play video stream
- *
- * @param data Data buffer
- * @param size Buffer size
- * @param pts Ignored under webOS 5
- * @return 0 if succeeded
+ * @return 0 on success, -1 on failure
  */
-int NDL_DirectAudioPlay(const void *data, size_t size, unsigned long long pts);
+int NDL_DirectMediaSetAppState(NDL_DIRECTMEDIA_APP_STATE state);
+
+/**
+ * @return 0 on success, -1 on failure
+ */
+int NDL_DirectVideoSetArea(int left, int top, int width, int height);
+
+#ifdef __cplusplus
+}
+#endif
