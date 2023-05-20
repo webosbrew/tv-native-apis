@@ -10,7 +10,7 @@ static int app_quit = 0;
 
 int videoPreroll(int width, int height, int framerate)
 {
-    NDL_DIRECTVIDEO_DATA_INFO info = {
+    NDL_DIRECTVIDEO_DATA_INFO_T info = {
         .width = width,
         .height = height,
     };
@@ -19,7 +19,7 @@ int videoPreroll(int width, int height, int framerate)
 
 int videoSample(const void *data, size_t size)
 {
-    return NDL_DirectVideoPlay(data, size);
+    return NDL_DirectVideoPlay((void *) data, size);
 }
 
 void videoEos()
@@ -29,22 +29,22 @@ void videoEos()
 
 int audioPreroll(int channels, int sampleFreq)
 {
-    NDL_DIRECTAUDIO_DATA_INFO info = {
-        .numChannel = channels,
-        .bitPerSample = 16,
-        .nodelay = 1,
-        .upperThreshold = 48,
-        .lowerThreshold = 16,
+    NDL_DIRECTAUDIO_DATA_INFO_T info = {
+        .number_of_channel = channels,
+        .bit_per_sample = 16,
+        .no_delay_mode = 1,
+        .no_delay_upper_time = 48,
+        .no_delay_lower_time = 16,
         .channel = NDL_DIRECTAUDIO_CH_MAIN,
-        .srcType = NDL_DIRECTAUDIO_SRC_TYPE_AAC,
-        .samplingFreq = NDL_DIRECTAUDIO_SAMPLING_FREQ_OF(sampleFreq),
+        .source = NDL_DIRECTAUDIO_SRC_TYPE_AAC,
+        .frequency = NDL_DIRECTAUDIO_SAMPLING_FREQ_OF(sampleFreq),
     };
     return NDL_DirectAudioOpen(&info);
 }
 
 int audioSample(const void *data, size_t size)
 {
-    return NDL_DirectAudioPlay(data, size);
+    return NDL_DirectAudioPlay((void *) data, size);
 }
 
 void audioEos()
