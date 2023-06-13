@@ -12,7 +12,9 @@ static const char *const LIBS[] = {
 
 static void *lib_handle = NULL;
 
-void curl_shim_init() {
+__attribute__((unused)) static void curl_shim_init() __attribute__((constructor));
+
+__attribute__((unused)) void curl_shim_init() {
     for (int i = 0; lib_handle == NULL; ++i) {
         const char *lib = LIBS[i];
         if (lib == NULL) {
