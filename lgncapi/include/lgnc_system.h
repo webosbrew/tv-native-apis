@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stddef.h>
 
 #include "lgnc_openapi_types.h"
@@ -72,7 +76,6 @@ enum LGNC_CURSOR_HOTSPOT_T {
 };
 
 
-
 typedef struct LGNC_CTRL_INFO LGNC_CTRL_INFO, *PLGNC_CTRL_INFO;
 
 struct LGNC_CTRL_INFO {
@@ -114,12 +117,20 @@ int LGNC_SYSTEM_Finalize(void);
 
 int LGNC_SYSTEM_GetDisplayId(int *displayId /* very likely to be wl_egl_window */);
 
-int LGNC_SYSTEM_GetLanguage(void);
+int LGNC_SYSTEM_GetDisplayResolution(int *width, int *height);
 
-int LGNC_SYSTEM_GetSaveDirectory(void);
+int LGNC_SYSTEM_GetLanguage(char *language);
 
-int LGNC_SYSTEM_GetSystemInfo(void);
+int LGNC_SYSTEM_GetSaveDirectory(char *directory);
+
+int LGNC_SYSTEM_GetSystemInfo(LGNC_CTRL_INFO *info);
+
+int LGNC_SYSTEM_GetVersion(int *major, int *minor, int *patch);
 
 int LGNC_SYSTEM_SetCursorShape(void);
 
 int LGNC_SYSTEM_SetCustomCursor(void);
+
+#ifdef __cplusplus
+}
+#endif
