@@ -1,5 +1,3 @@
 # Headers & Stubs of webOS System Native Libraries
 
-TODO: Usage
-
-Please see respective directories for details
+Deprecated: use [webos-userland](https://github.com/webosbrew/webos-userland) instead!
